@@ -10,21 +10,21 @@
                         <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
                             {!! csrf_field() !!}
 
-                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">邮箱地址</label>
+                            <div class="form-group{{ $errors->has('uno') ? ' has-error' : '' }}">
+                                <label class="col-md-4 control-label">学号</label>
 
                                 <div class="col-md-6">
-                                    <input type="email" class="form-control" name="email" value="{{ old('email') }}">
+                                    <input type="number" class="form-control" name="uno" value="{{ old('uno') }}">
 
-                                    @if ($errors->has('email'))
+                                    @if ($errors->has('uno'))
                                         <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                        <strong>{{ $errors->first('uno') }}</strong>
                                     </span>
                                     @endif
                                 </div>
                             </div>
 
-                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <div class="form-group{{ $errors->has('password')||$errors->hasBag('default') ? ' has-error' : '' }}">
                                 <label class="col-md-4 control-label">密码</label>
 
                                 <div class="col-md-6">
@@ -33,6 +33,11 @@
                                     @if ($errors->has('password'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
+                                    @endif
+                                    @if ($errors->hasBag('default'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first() }}</strong>
                                     </span>
                                     @endif
                                 </div>

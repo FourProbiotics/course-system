@@ -10,21 +10,21 @@
                         <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">
                             {!! csrf_field() !!}
 
-                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">名字</label>
+                            <div class="form-group{{ $errors->has('uno') ? ' has-error' : '' }}">
+                                <label class="col-md-4 control-label">学号</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="name" value="{{ old('name') }}">
+                                    <input type="text" class="form-control" name="uno" value="{{ old('uno') }}">
 
-                                    @if ($errors->has('name'))
+                                    @if ($errors->has('uno'))
                                         <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
+                                        <strong>{{ $errors->first('uno') }}</strong>
                                     </span>
                                     @endif
                                 </div>
                             </div>
 
-                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                            {{--<div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                 <label class="col-md-4 control-label">邮箱地址</label>
 
                                 <div class="col-md-6">
@@ -36,7 +36,7 @@
                                     </span>
                                     @endif
                                 </div>
-                            </div>
+                            </div>--}}
 
                             <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                                 <label class="col-md-4 control-label">密码</label>
