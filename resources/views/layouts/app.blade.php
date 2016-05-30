@@ -8,7 +8,7 @@
     <title>@yield('title') - 课程网站系统</title>
 
     <!-- Fonts -->
-    <link href="{{ URL::asset('/css/font-awesome.min.css') }}" rel='stylesheet' type='text/css'>
+    <link href="https://cdn.bootcss.com/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
     <link href="http://fonts.useso.com/css?family=Lato:100,300,400,700" rel='stylesheet' type='text/css'>
 
     <!-- Styles -->
@@ -49,7 +49,9 @@
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav">
-                <li><a href="{{ url('/') }}">主页</a></li>
+                <li><a href="{{ url('/') }}">首页</a></li>
+                <li><a href="{{ url('/courses') }}">全部课程</a></li>
+                <li><a href="{{ url('/announces') }}">公告</a></li>
             </ul>
 
             <!-- Right Side Of Navbar -->
@@ -65,7 +67,14 @@
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>注销</a></li>
+                            <li><a href="{{ url('/user/profile') }}">个人信息</a></li>
+                            <li><a href="{{ url('/user/change_password') }}">修改密码</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{{ url('/user/courses') }}">我的课程</a></li>
+                            <li><a href="{{ url('/user/homeworks') }}">作业管理 <span class="badge">1</span></a></li>
+                            <li><a href="{{ url('/user/messages') }}">消息信息 <span class="badge">4</span></a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{{ url('/logout') }}">注销</a></li>
                         </ul>
                     </li>
                 @endif

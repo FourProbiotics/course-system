@@ -1,9 +1,8 @@
 <?php
 
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', [
+    'middleware' => 'web', 'uses' => 'indexController@index']);
 ####################################################
 #登录，登出, 自动跳转, 密码重置
 ####################################################
