@@ -1,0 +1,81 @@
+@CHARSET "UTF-8";
+
+html, body {
+    position: relative;
+    background: #FFF;
+    color: #444;
+    width: 100%;
+    min-height: 100%;
+}
+
+div, span, a, ul, li, p, img, button, input {
+    transition-property: all;
+    transition-duration: 300ms;
+    transition-timing-function: linear;
+    -moz-transition-property: all;
+    -moz-transition-duration: 300ms;
+    -moz-transition-timing-function: linear;
+    -webkit-transition-property: all;
+    -webkit-transition-duration: 300ms;
+    -webkit-transition-timing-function: linear;
+    -o-transition-property: all;
+    -o-transition-duration: 300ms;
+    -o-transition-timing-function: linear;
+}
+
+#main-width {
+    width: 80em;
+    margin: 1em auto;
+    margin-bottom: 2em;
+}
+
+.nlink {
+    cursor: pointer;
+}
+
+.divlink {
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+a.disabled {
+    color: #666;
+    cursor: default;
+    text-decoration: none;
+}
+
+a.msg_hadread {
+    color: #666;
+}
+
+.course-item {
+    color: #585858;
+    line-height: 1.8em;
+}
+
+.course-item .title {
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
+
+.course-item .content {
+    text-indent: 2em;
+}
+
+.course-item .content img {
+    max-width: 40em;
+}
+
+table.table-td-padding-2 tr td, table.table-td-padding-2 tr th {
+    padding-left: 2em;
+    max-width: 15em;
+}
+
+.course-comment-item {
+    line-height: 2em;
+    float: right;
+    color: #858585;
+}
