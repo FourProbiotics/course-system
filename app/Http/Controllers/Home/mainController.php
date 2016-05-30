@@ -47,4 +47,13 @@ class mainController extends Controller
         return view('home.messages');
     }
 
+    /**
+     * 个人消息详情
+     */
+    public function message($id)
+    {
+
+        return view('home.message');
+    }
+
 }

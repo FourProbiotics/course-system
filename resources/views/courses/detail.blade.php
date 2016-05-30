@@ -66,11 +66,13 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td><a href="./course_res.php">Chapter1. PHP is the best programing language</a></td>
+                                <td><a href="{{ url('/resource/1') }}">Chapter1. PHP is the best programing language</a>
+                                </td>
                                 <td>2016-03-03</td>
                             </tr>
                             <tr>
-                                <td><a href="./course_res.php">Chapter2. PHP is the best programing language</a></td>
+                                <td><a href="{{ url('/resource/1') }}">Chapter2. PHP is the best programing language</a>
+                                </td>
                                 <td>2016-03-03</td>
                             </tr>
                             </tbody>
