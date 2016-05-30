@@ -20,5 +20,4 @@ return [
             "h" => 100
         )
     ),
-    'upload_dir' => dirname(__FILE__),
 ];

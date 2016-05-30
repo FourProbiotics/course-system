@@ -67,12 +67,12 @@
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ url('/user/profile') }}">个人信息</a></li>
-                            <li><a href="{{ url('/user/change_password') }}">修改密码</a></li>
+                            <li><a href="{{ url('/account/profile') }}">个人信息</a></li>
+                            <li><a href="{{ url('/account/change_password') }}">修改密码</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="{{ url('/user/courses') }}">我的课程</a></li>
-                            <li><a href="{{ url('/user/homeworks') }}">作业管理 <span class="badge">1</span></a></li>
-                            <li><a href="{{ url('/user/messages') }}">消息信息 <span class="badge">4</span></a></li>
+                            <li><a href="{{ url('/home/courses') }}">我的课程</a></li>
+                            <li><a href="{{ url('/home/homework') }}">作业管理 <span class="badge">1</span></a></li>
+                            <li><a href="{{ url('/home/messages') }}">消息信息 <span class="badge">4</span></a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="{{ url('/logout') }}">注销</a></li>
                         </ul>

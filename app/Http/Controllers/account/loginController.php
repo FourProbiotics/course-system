@@ -25,12 +25,6 @@ class loginController extends Controller
      */
     public function loginGet()
     {
-        $user = DB::table('users')->where('uno', floatval('201319630201'))->get();
-        //var_dump($user);
-        //var_dump(($user[0]->uno));
-        //var_dump(Config::set('test.config','value'));
-        //var_dump(base_path('uploads'));
-        //var_dump(Auth::attempt(['uno' => $user->uno, 'password' => '127555crd'],false, false));
         return view('account.login');
     }
 

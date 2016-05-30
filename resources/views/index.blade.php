@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    首页
+@stop
+
 @section('content')
     <div id="main-width">
         <ol class="breadcrumb">
