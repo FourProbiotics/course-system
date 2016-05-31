@@ -59,3 +59,14 @@ Route::get('announce/{id}', [
 
 Route::get('resource/{id}', [
     'middleware' => 'web', 'uses' => 'Resources\mainController@resource'])->where('id', '[0-9]+');
+
+####################################################
+#作业的相关操作
+####################################################
+//Route::get('announces/', ['middleware' => 'web', 'uses' => 'Announces\mainController@index']);
+
+Route::get('homework/{id}', [
+    'middleware' => 'web', 'uses' => 'Homework\mainController@homework'])->where('id', '[0-9]+');
+
+Route::get('homework/submit/{id}', [
+    'middleware' => 'web', 'uses' => 'Homework\mainController@submit'])->where('id', '[0-9]+');

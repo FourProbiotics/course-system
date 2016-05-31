@@ -26,14 +26,14 @@
             <tbody>
             <tr>
                 <th scope="row">1</th>
-                <td><a href="./course.php">Databases, JavaScript, Ajax 和 PHP</a></td>
-                <td><a href="./usr_homework.php">t2.实现简单微博</a></td>
+                <td><a href="{{ url('/course/1') }}">Databases, JavaScript, Ajax 和 PHP</a></td>
+                <td><a href="{{ url('/homework/1') }}">t2.实现简单微博</a></td>
                 <td>未提交</td>
                 <td>未知</td>
                 <td>2016-04-04 23:59</td>
                 <td>
-                    <a href="./usr_homework.php" class="btn btn-default btn-xs">查看详情</a>
-                    <a href="./usr_submithw.php" class="btn btn-default btn-xs">提交作业</a>
+                    <a href="{{ url('/homework/1') }}" class="btn btn-default btn-xs">查看详情</a>
+                    <a href="{{ url('/homework/submit/1') }}" class="btn btn-default btn-xs">提交作业</a>
                     <!-- 如果作业已经提交，此按钮变成编辑作业，若已过期，加上disabled类 -->
                 </td>
             </tr>
