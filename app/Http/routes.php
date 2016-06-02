@@ -70,3 +70,66 @@ Route::get('homework/{id}', [
 
 Route::get('homework/submit/{id}', [
     'middleware' => 'web', 'uses' => 'Homework\mainController@submit'])->where('id', '[0-9]+');
+
+####################################################
+#admin的相关操作
+####################################################
+Route::group(['as' => 'admin::'], function () {
+    Route::get('admin/', [
+        'as' => 'setting', 'middleware' => 'web', 'uses' => 'Admin\mainController@setting']);
+    Route::get('admin/setting', [
+        'as' => 'setting', 'middleware' => 'web', 'uses' => 'Admin\mainController@setting']);
+
+    Route::get('admin/messages', [
+        'as' => 'messages', 'middleware' => 'web', 'uses' => 'Admin\mainController@messages']);
+    Route::get('admin/message/new', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@message_new']);
+
+    Route::get('admin/courses', [
+        'as' => 'courses', 'middleware' => 'web', 'uses' => 'Admin\mainController@courses']);
+    Route::get('admin/course/new', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@course_new']);
+    Route::get('admin/course/{id}/edit', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@course_edit'])->where('id', '[0-9]+');
+    Route::get('admin/course/{id}/students', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@course_students'])->where('id', '[0-9]+');
+
+    Route::get('admin/homework', [
+        'as' => 'homework', 'middleware' => 'web', 'uses' => 'Admin\mainController@homework']);
+    Route::get('admin/homework/new', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@homework_new']);
+    Route::get('admin/homework/{id}/edit', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@homework_edit'])->where('id', '[0-9]+');
+    Route::get('admin/homework/{id}/detail', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@homework_detail'])->where('id', '[0-9]+');
+    Route::get('admin/homework/{id}/marking', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@homework_marking'])->where('id', '[0-9]+');
+
+    Route::get('admin/resources', [
+        'as' => 'resources', 'middleware' => 'web', 'uses' => 'Admin\mainController@resources']);
+    Route::get('admin/resource/new', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@resource_new']);
+    Route::get('admin/resource/{id}/edit', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@resource_edit'])->where('id', '[0-9]+');
+
+    Route::get('admin/announces', [
+        'as' => 'announces', 'middleware' => 'web', 'uses' => 'Admin\mainController@announces']);
+    Route::get('admin/announce/new', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@announce_new']);
+    Route::get('admin/announce/{id}/edit', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@announce_edit'])->where('id', '[0-9]+');
+
+    Route::get('admin/students', [
+        'as' => 'students', 'middleware' => 'web', 'uses' => 'Admin\mainController@students']);
+    Route::get('admin/student/new', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@student_new']);
+    Route::get('admin/student/import', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@student_import']);
+    Route::get('admin/student/{id}/edit', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@student_edit'])->where('id', '[0-9]+');
+
+    Route::get('admin/comments', [
+        'as' => 'comments', 'middleware' => 'web', 'uses' => 'Admin\mainController@comments']);
+    Route::get('admin/comment/{id}/reply', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@comment_reply'])->where('id', '[0-9]+');
+});

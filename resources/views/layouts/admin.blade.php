@@ -49,9 +49,14 @@
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav">
-                <li><a href="{{ url('/') }}">首页</a></li>
-                <li><a href="{{ url('/courses') }}">全部课程</a></li>
-                <li><a href="{{ url('/announces') }}">公告</a></li>
+                <li><a href="{{ url('/admin/setting') }}">网站设置</a></li>
+                <li><a href="{{ url('/admin/messages') }}">短消息</a></li>
+                <li><a href="{{ url('/admin/courses') }}">课程管理</a></li>
+                <li><a href="{{ url('/admin/homework') }}">作业管理</a></li>
+                <li><a href="{{ url('/admin/resources') }}">课程资源管理</a></li>
+                <li><a href="{{ url('/admin/announces') }}">公告管理</a></li>
+                <li><a href="{{ url('/admin/students') }}">学生管理</a></li>
+                <li><a href="{{ url('/admin/comments') }}">评论/留言管理</a></li>
             </ul>
 
             <!-- Right Side Of Navbar -->
@@ -70,14 +75,6 @@
                             <li><a href="{{ url('/account/profile') }}">个人信息</a></li>
                             <li><a href="{{ url('/account/change_password') }}">修改密码</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="{{ url('/home/courses') }}">我的课程</a></li>
-                            <li><a href="{{ url('/home/homework') }}">作业管理 <span class="badge">1</span></a></li>
-                            <li><a href="{{ url('/home/messages') }}">消息信息 <span class="badge">4</span></a></li>
-                            @if(Auth::user()->group_id == 1)
-                                <li role="separator" class="divider"></li>
-                                <li><a href="{{ url('/admin') }}">后台管理</a></li>
-                            @endif
-                            <li role="separator" class="divider"></li>
                             <li><a href="{{ url('/logout') }}">注销</a></li>
                         </ul>
                     </li>
@@ -89,7 +86,7 @@
 
 @yield('content')
 
-        <!-- JavaScripts -->
+<!-- JavaScripts -->
 <script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
