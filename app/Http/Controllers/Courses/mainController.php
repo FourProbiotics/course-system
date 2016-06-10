@@ -7,7 +7,7 @@
  */
 namespace App\Http\Controllers\Courses;
 
-use DB;
+use App\Http\Models\M;
 use Auth;
 use Config;
 use App\User;
@@ -25,8 +25,9 @@ class mainController extends Controller
      */
     public function index()
     {
-
-        return view('courses.index');
+        $course_list = M::model('Course')->get_course_info_by_ids([1, 2]);
+        //var_dump($course_list);
+        return view('courses.index', [$course_list]);
     }
 
     /**
@@ -34,7 +35,7 @@ class mainController extends Controller
      */
     public function course($id)
     {
-        $course_info = DB::table('courses')->where('course_id', floatval($id))->first();
+        //$course_info = DB::table('courses')->where('course_id', floatval($id))->first();
         return view('courses.detail');
     }
 

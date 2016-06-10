@@ -65,7 +65,11 @@ class AuthController extends Controller
     {
         return User::create([
             'uno' => $data['uno'],
-            //'last_login' => date('Y-m-d H:i:s', time()),
+            /*'last_login' => date('Y-m-d H:i:s', time()),
+            'group_id' => 1,
+            'name' => '陈然',
+            'college' => '国际学院',
+            'class' => '软件工程1302班',*/
             //'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);

@@ -3,6 +3,11 @@
 
 Route::get('/', [
     'middleware' => 'web', 'uses' => 'indexController@index']);
+
+/*Route::group(['middleware' => 'web'], function () {
+    Route::auth();
+    Route::get('/home', 'HomeController@index');
+});*/
 ####################################################
 #登录，登出, 自动跳转, 密码重置
 ####################################################

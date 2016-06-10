@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>@yield('title') - 课程网站系统</title>
 
     <!-- Fonts -->
@@ -59,7 +58,7 @@
                 <!-- Authentication Links -->
                 @if (Auth::guest())
                     <li><a href="{{ url('/login') }}">登录</a></li>
-                    {{--<li><a href="{{ url('/register') }}">注册</a></li>--}}
+                    <li><a href="{{ url('/register') }}">注册</a></li>
                 @else
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -89,6 +88,7 @@
 
 @yield('content')
 
+@include('UEditor::head');
         <!-- JavaScripts -->
 <script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>

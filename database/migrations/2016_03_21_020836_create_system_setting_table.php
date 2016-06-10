@@ -17,6 +17,7 @@ class CreateSystemSettingTable extends Migration
             $table->string('varname');
             $table->text('value');
         });
+
     }
 
     /**

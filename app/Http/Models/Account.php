@@ -49,19 +49,6 @@ class Account extends Model
     }
 
     /**
-     * 过滤数字字符串
-     *
-     * @param string
-     * @return boolean
-     */
-    public static function intval_string(&$value)
-    {
-        if (!is_numeric($value)) {
-            $value = floatval($value);
-        }
-    }
-
-    /**
      * 用户登录验证
      *
      * @param string
@@ -161,7 +148,7 @@ class Account extends Model
             return false;
         }
 
-        array_walk_recursive($unos, 'intval_string');
+        array_walk_recursive($unos, 'intval');
 
         $unos = array_unique($unos);
 
@@ -254,7 +241,7 @@ class Account extends Model
         }
 
         foreach (config('cr.avatar_thumbnail') as $key => $val) {
-            @unlink(base_path('uploads') . '/avatar/' . $this->get_avatar($uno, $key, 1) . $this->get_avatar($uno, $key, 2));
+            @unlink(base_path('public/uploads') . '/avatar/' . $this->get_avatar($uno, $key, 1) . $this->get_avatar($uno, $key, 2));
         }
 
         return $this->update_users_fields(array('avatar_file' => ''), $uno);

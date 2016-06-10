@@ -18,7 +18,7 @@ class CreateResourceTable extends Migration
             $table->string('resource_content')->comment = '资源描述';
             $table->string('file_location')->comment = '文件位置';
             $table->string('item_type')->comment = '关联类型';
-            $table->string('item_id')->comment = '关联id';
+            $table->integer('item_id')->comment = '关联id';
             $table->timestamp('add_time')->comment = '添加时间';
         });
     }
