@@ -39,7 +39,7 @@ class User extends Authenticatable
     protected static function rules()
     {
         return [
-            'uno' => 'required|digits:12',
+            'uno' => 'required',
             'password' => 'required'
         ];
     }

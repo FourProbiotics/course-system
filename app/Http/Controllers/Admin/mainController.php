@@ -18,6 +18,15 @@ use Illuminate\Http\Request;
 
 class mainController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
 
     /**
      * 返回admin设置视图

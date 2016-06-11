@@ -40,15 +40,15 @@
             <div class="form-group">
                 <label for="inputDesc" class="col-sm-2 control-label">描述</label>
                 <div class="col-sm-8">
-                    <textarea rows="5" name="content" class="form-control" id="inputDesc" placeholder="课程描述"></textarea>
+                    <script id="teach_outline" name="teach_outline" type="text/plain">
+                    </script>
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputContent" class="col-sm-2 control-label">教学日历</label>
                 <div class="col-sm-8">
-                    <textarea rows="5" name="content" class="form-control" id="inputContent"
-                              placeholder="公告内容"></textarea>
-                    <script>CKEDITOR.replace('inputContent');</script>
+                    <script id="teach_plan" name="teach_plan" type="text/plain">
+                    </script>
                 </div>
             </div>
             <div class="form-group">
@@ -66,4 +66,11 @@
             </div>
         </form>
     </div>
+    <!-- 实例化编辑器 -->
+    <script type="text/javascript">
+        var ue = UE.getEditor('teach_plan');
+        UE.getEditor('teach_outline');
+    </script>
 @endsection
+
+
