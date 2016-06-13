@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title') - 课程网站系统</title>
+    <title>@yield('title') - {{setting('site_name')}}</title>
 
     <!-- Fonts -->
     <link href="https://cdn.bootcss.com/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
@@ -41,7 +41,7 @@
 
             <!-- Branding Image -->
             <a class="navbar-brand" href="{{ url('/') }}">
-                课程网站系统
+                {{setting('site_name')}}
             </a>
         </div>
 
@@ -55,6 +55,7 @@
                 <li><a href="{{ url('/admin/resources') }}">课程资源管理</a></li>
                 <li><a href="{{ url('/admin/announces') }}">公告管理</a></li>
                 <li><a href="{{ url('/admin/students') }}">学生管理</a></li>
+                <li><a href="{{ url('/admin/groups') }}">分组管理</a></li>
                 <li><a href="{{ url('/admin/comments') }}">评论/留言管理</a></li>
             </ul>
 

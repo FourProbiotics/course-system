@@ -103,32 +103,32 @@ class Account extends Model
             return false;
         }
 
-        if ($uno = DB::table('users')->select('uno')->where('email', $email)->first()) {
-            return $this->get_user_info_by_uno($uno);
+        if ($uid = DB::table('users')->select('uid')->where('email', $email)->first()) {
+            return $this->get_user_info_by_uid($uid);
         }
 
-        return $uno;
+        return $uid;
     }
 
     /**
-     * 通过 UNO 获取用户信息
+     * 通过 uid 获取用户信息
      *
      * $cache_result 为是否缓存结果
      *
      * @param string
      * @return object
      */
-    public function get_user_info_by_uno($uno)
+    public function get_user_info_by_uid($uid)
     {
-        if (!$uno) {
+        if (!$uid) {
             return false;
         }
 
-        if ($uno == -1) {
+        if ($uid == -1) {
             return false;
         }
 
-        if (!$user_info = DB::table('users')->where('uno', floatval($uno))->first()) {
+        if (!$user_info = DB::table('users')->where('uid', floatval($uid))->first()) {
             return false;
         }
 
@@ -139,54 +139,57 @@ class Account extends Model
      * 通过 UID 数组获取用户信息
      *
      * @param array
-     * @param boolean
      * @return array
      */
-    public function get_user_info_by_unos($unos)
+    public function get_user_info_by_uids($uids)
     {
-        if (!is_array($unos) OR sizeof($unos) == 0) {
+        if (!is_array($uids) OR sizeof($uids) == 0) {
             return false;
         }
 
-        array_walk_recursive($unos, 'intval');
+        array_walk_recursive($uids, 'intval_string');
 
-        $unos = array_unique($unos);
+        $uids = array_unique($uids);
 
-        if (sizeof($unos) == 1) {
-            if ($one_user_info = $this->get_user_info_by_uno(end($unos))) {
+        if (sizeof($uids) == 1) {
+            if ($one_user_info = $this->get_user_info_by_uid(end($uids))) {
                 return array(
-                    end($unos) => $one_user_info
+                    end($uids) => $one_user_info
                 );
             }
 
         }
 
-        static $users_info;
-
-        if ($user_info = DB::table('users')->select('uno')->whereIn('uno', $unos)->get()) {
+        if ($user_info = DB::table('users')->whereIn('uid', $uids)->get()) {
             foreach ($user_info as $key => $val) {
-                unset($val->password);
-
-                $data[$val->uno] = $val;
-
-                $query_unos[] = $val->uno;
+                $user_list[$val->uid] = $val;
             }
-
-            foreach ($unos AS $uno) {
-                if ($uno == -1) {
-                    $result['-1'] = array(
-                        '$uno' => -1,
-                        'user_name' => '[已注销]',
-                    );
-                } else if ($data[$uno]) {
-                    $result[$uno] = $data[$uno];
-                }
-            }
-
-            $users_info[implode('_', $unos)] = $data;
         }
 
-        return $result;
+        return $user_info;
+    }
+
+    /**
+     * 通过 UNOS 数组获取UIDS
+     *
+     * @param array
+     * @return array
+     */
+    public function get_uids_by_unos($unos)
+    {
+        if (!is_array($unos) OR sizeof($unos) == 0) {
+            return false;
+        }
+
+        $unos = array_unique($unos);
+
+        if ($user_info = DB::table('users')->whereIn('uno', $unos)->get()) {
+            foreach ($user_info as $key => $val) {
+                $uids[] = $val->uid;
+            }
+        }
+
+        return $uids;
     }
 
     /**
@@ -234,17 +237,17 @@ class Account extends Model
      * @param int
      * @return boolean
      */
-    public function delete_avatar($uno)
+    public function delete_avatar($uid)
     {
-        if (!$uno) {
+        if (!$uid) {
             return false;
         }
 
         foreach (config('cr.avatar_thumbnail') as $key => $val) {
-            @unlink(base_path('public/uploads') . '/avatar/' . $this->get_avatar($uno, $key, 1) . $this->get_avatar($uno, $key, 2));
+            @unlink(base_path('public/uploads') . '/avatar/' . $this->get_avatar($uid, $key, 1) . $this->get_avatar($uid, $key, 2));
         }
 
-        return $this->update_users_fields(array('avatar_file' => ''), $uno);
+        return $this->update_users_fields(array('avatar_file' => ''), $uid);
     }
 
     /**
@@ -254,11 +257,21 @@ class Account extends Model
      * @param uid
      * @return int
      */
-    public function update_users_fields($update_data, $uno)
+    public function update_users_fields($update_data, $uid)
     {
         return DB::table('users')
-            ->where('uno', floatval($uno))
+            ->where('uid', floatval($uid))
             ->update($update_data);
+    }
+
+    public function remove_user_by_uid($uid)
+    {
+        if ($user_info = $this->get_user_info_by_uid($uid)) {
+            DB::table('users')->where('uid', intval($uid))->delete();
+            //删除相关信息，以后再说
+        }
+
+        return true;
     }
 
 

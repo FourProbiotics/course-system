@@ -244,5 +244,22 @@ class mainController extends Controller
         return view('admin.comment_reply');
     }
 
+    /**
+     * 返回分组视图
+     */
+    public function groups()
+    {
+
+        return view('admin.groups');
+    }
+
+    /**
+     * 返回分组编辑视图
+     */
+    public function groups_edit()
+    {
+
+        return view('admin.groups_edit');
+    }
 
 }

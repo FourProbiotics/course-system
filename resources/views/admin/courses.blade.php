@@ -32,7 +32,8 @@
                 <td>计算机学院</td>
                 <td>
                     <a href="{{ url('/admin/course/1/edit') }}" class="btn btn-default btn-xs">编辑</a>
-                    <a href="{{ url('/admin/course/1/students/') }}" class="btn btn-default btn-xs">学生</a>
+                    <a href="{{ url('/admin/course/1/groups/') }}" class="btn btn-default btn-xs">分组</a>
+                    <a href="{{ url('/admin/course/1/students/') }}" class="btn btn-default btn-xs">全部学生</a>
                     <a href="{{ url('/admin/course/1/delete') }}" class="btn btn-default btn-xs">删除</a>
                 </td>
             </tr>

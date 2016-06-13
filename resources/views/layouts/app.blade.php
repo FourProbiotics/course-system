@@ -41,7 +41,7 @@
 
             <!-- Branding Image -->
             <a class="navbar-brand" href="{{ url('/') }}">
-                课程网站系统
+                {{setting('site_name')}}
             </a>
         </div>
 

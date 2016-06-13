@@ -13,7 +13,7 @@ class M extends Model
      */
     final protected function model($model)
     {
-        $model_name = 'App\Http\Models\\' . $model;
+        $model_name = 'App\Http\Models\\' . ucfirst($model);
         return new $model_name;
     }
 

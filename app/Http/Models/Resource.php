@@ -2,6 +2,7 @@
 
 namespace App\Http\Models;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Resource extends Model
@@ -12,7 +13,7 @@ class Resource extends Model
             $is_image = 1;
         }
 
-        return DB::table('resource')->insert(array(
+        return DB::table('resource')->insertGetId(array(
             'file_name' => htmlspecialchars($file_name),
             'resource_content' => $resource_content,
             'add_time' => date('Y-m-d H:i:s', time()),
@@ -31,9 +32,9 @@ class Resource extends Model
         }
         DB::table('resource')->where('id', intval($id))->delete();
 
-        $attach_dir = base_path('public/uploads') . '/' . $resource->file_location;
+        $resource_dir = base_path('public/uploads') . '/' . $resource->file_location;
 
-        @unlink($attach_dir);
+        @unlink($resource_dir);
 
         return true;
     }

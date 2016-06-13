@@ -40,7 +40,7 @@ class Course extends Model
 
         $result = null;
 
-        if ($courses_list = $user_info = DB::table('courses')->select('course_id')->whereIn('course_id', $course_ids)->get()) {
+        if ($courses_list = $user_info = DB::table('courses')->whereIn('course_id', $course_ids)->get()) {
             foreach ($courses_list AS $key => $val) {
                 $result[$val->course_id] = $val;
             }
@@ -73,7 +73,7 @@ class Course extends Model
             'teach_book' => serialize($teach_book),
         );
 
-        $course_id = DB::table('courses')->insert($to_save_course);
+        $course_id = DB::table('courses')->insertGetId($to_save_course);
 
         if ($course_id) {
             //提醒?
@@ -117,10 +117,10 @@ class Course extends Model
             $data['teacher_name'] = htmlspecialchars($teacher_name);
         }
         if ($teach_ppt) {
-            $data['teach_ppt'] = htmlspecialchars($teach_ppt);
+            $data['teach_ppt'] = ($teach_ppt);
         }
         if ($teach_book) {
-            $data['teach_book'] = htmlspecialchars($teach_book);
+            $data['teach_book'] = ($teach_book);
         }
 
         DB::table('courses')->where('course_id', intval($course_id))->update($data);
@@ -141,12 +141,19 @@ class Course extends Model
             return false;
         }
 
-        //$this->model('answer')->remove_answers_by_course_id($course_id); // 删除关联的回复内容
+        DB::table('courses')->where('course_id', intval($course_id))->delete();
 
         // 删除评论
         DB::table('comments')->where('course_id', intval($course_id))->delete();
 
         // 删除附件
         // 以后再说
+    }
+
+    public function get_courses_list($page = 1, $per_page = 10)
+    {
+        $posts_index = DB::table('courses')->skip(intval($page) * intval($per_page))->take(intval($per_page))->orderBy('add_time', 'desc')->get();
+
+        return $posts_index;
     }
 }

@@ -137,4 +137,11 @@ Route::group(['as' => 'admin::'], function () {
         'as' => 'comments', 'middleware' => 'web', 'uses' => 'Admin\mainController@comments']);
     Route::get('admin/comment/{id}/reply', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@comment_reply'])->where('id', '[0-9]+');
+
+    Route::get('admin/groups', [
+        'as' => 'groups', 'middleware' => 'web', 'uses' => 'Admin\mainController@groups']);
+    Route::get('admin/groups/new', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@groups_new']);
+    Route::get('admin/groups/{id}/edit', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@groups_edit'])->where('id', '[0-9]+');
 });
