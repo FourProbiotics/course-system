@@ -31,9 +31,9 @@
                 </td>
                 <td><a href="{{ url('/homework/'.$val->homework_id) }}">{{$val->homework_title}}</a></td>
                 @if($val->answer)
-                    <td>未提交</td>
-                @else
                     <td>已提交</td>
+                @else
+                    <td>未提交</td>
                 @endif
                 @if($val->answer && $val->answer->read_flag)
                     <td>{{$val->answer->score}}</td>
