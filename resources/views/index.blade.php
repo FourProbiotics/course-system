@@ -56,7 +56,7 @@
                             <tbody>
                             <?php foreach ($announces as $key => $val) {?>
                             <tr>
-                                <td><a href="{{ url('/') }}/announce/{{$val->id}}/">{{$val->title}}</a></td>
+                                <td><a href="{{ url('/announce/'.$val->id) }}">{{$val->title}}</a></td>
                                 <td>{{$val->update_time}}</td>
                             </tr>
                             <?php } ?>

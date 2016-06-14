@@ -184,7 +184,7 @@ class mainController extends Controller
     /**
      * 返回admin公告视图
      */
-    public function announce_edit()
+    public function announce_edit($id)
     {
 
         return view('admin.announce_edit');

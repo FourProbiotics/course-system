@@ -120,7 +120,7 @@ Route::group(['as' => 'admin::'], function () {
     Route::get('admin/resource/{id}/edit', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@resource_edit'])->where('id', '[0-9]+');
 
-    Route::get('admin/announces', [
+    Route::get('admin/announces/', [
         'as' => 'announces', 'middleware' => 'web', 'uses' => 'Admin\mainController@announces']);
     Route::get('admin/announce/new', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@announce_new']);
