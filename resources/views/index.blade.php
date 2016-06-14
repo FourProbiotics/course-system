@@ -30,7 +30,7 @@
                         <tr>
                             <th scope="row">{{$val->course_id}}</th>
                             <td>
-                                <a href="{{ url('/') }}/course/{{$val->course_id}}/">{{$val->course_name}}</a>
+                                <a href="{{ url('/course/'.$val->course_id) }}">{{$val->course_name}}</a>
                             </td>
                             <td>{{$val->teacher_name}}</td>
                             <td>{{$val->course_college}}</td>

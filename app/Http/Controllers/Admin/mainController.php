@@ -231,8 +231,17 @@ class mainController extends Controller
      */
     public function comments()
     {
+        $courses = DB::table('courses')->count();
+        $comments = array();
+        for($i = 1;$i <= $courses;$i++){
+            $temp = model('comment')->get_comment_list_by_course_id($i);
+            foreach($temp as $k=>$v)
+            {
+                array_push($comments, $v);
+            }
+        }
 
-        return view('admin.comments');
+        return view('admin.comments', ['comments' => $comments]);
     }
 
     /**
