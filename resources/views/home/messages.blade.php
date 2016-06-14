@@ -23,20 +23,25 @@
             </tr>
             </thead>
             <tbody>
+            <?php $count = count($messages); ?>
+            @foreach($messages as $key => $val)
             <tr> <!-- 这是未读的消息 -->
-                <th scope="row">1</th>
-                <td><a href="{{ url('home/message/1') }}">这是消息的标题</a></td>
-                <td>未读</td>
-                <td>系统</td>
-                <td>2016-04-04 10:20:30</td>
+                <th scope="row">{{$count--}}</th>
+                <td><a <?php if($val->read_flag == 1) {?>class="msg_hadread"
+                       <?php } ?>href="{{ url('home/message/'.$val->id) }}">{{$val->title}}</a></td>
+                @if($val->read_flag == 0)
+                    <td>未读</td>
+                @else
+                    <td>已读</td>
+                @endif
+                @if($val->sender_uid == 1)
+                    <td>管理员</td>
+                @else
+                    <td>系统</td>
+                @endif
+                <td>{{$val->add_time}}</td>
             </tr>
-            <tr> <!-- 这是已读的消息 -->
-                <th scope="row">2</th>
-                <td><a class="msg_hadread" href="{{ url('home/message/1') }}">这是消息的标题</a></td>
-                <td>已读</td>
-                <td>管理员</td>
-                <td>2016-04-04 10:20:30</td>
-            </tr>
+            @endforeach
             </tbody>
         </table>
     </div>

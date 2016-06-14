@@ -25,7 +25,10 @@ Route::get('account/profile', [
     'middleware' => 'web', 'uses' => 'Account\mainController@profile']);
 
 Route::get('account/change_password', [
-    'middleware' => 'web', 'uses' => 'Account\mainController@change_password']);
+    'middleware' => 'web', 'as' => 'change_password', 'uses' => 'Account\mainController@change_password']);
+
+Route::post('account/change_password', [
+    'middleware' => 'web', 'uses' => 'Account\mainController@reset_password']);
 
 Route::get('home/courses', [
     'middleware' => 'web', 'uses' => 'Home\mainController@courses']);
@@ -73,7 +76,7 @@ Route::get('resource/{id}', [
 Route::get('homework/{id}', [
     'middleware' => 'web', 'uses' => 'Homework\mainController@homework'])->where('id', '[0-9]+');
 
-Route::get('homework/submit/{id}', [
+Route::get('homework/{id}/submit', [
     'middleware' => 'web', 'uses' => 'Homework\mainController@submit'])->where('id', '[0-9]+');
 
 ####################################################

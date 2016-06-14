@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('title')
+    登陆成功
+@stop
 @section('content')
     <div class="container">
         <div class="row">

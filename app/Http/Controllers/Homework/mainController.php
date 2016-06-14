@@ -25,7 +25,12 @@ class mainController extends Controller
      */
     public function homework($id)
     {
-        return view('homework.detail');
+        $homework = model('homework')->get_homework_info_by_id($id);
+        $homework->course_info = model('course')->get_course_info_by_id($homework->course_id);
+        $homework->resource = model('resource')->get_resource('homework', $homework->homework_id);
+        return view('homework.detail', [
+            'homework' => $homework,
+        ]);
     }
 
     /**
@@ -33,6 +38,11 @@ class mainController extends Controller
      */
     public function submit($id)
     {
-        return view('homework.submit');
+        $homework = model('homework')->get_homework_info_by_id($id);
+        $homework->course_info = model('course')->get_course_info_by_id($homework->course_id);
+        $homework->resource = model('resource')->get_resource('homework', $homework->homework_id);
+        return view('homework.submit', [
+            'homework' => $homework,
+        ]);
     }
 }

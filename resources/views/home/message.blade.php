@@ -10,19 +10,20 @@
             <li><a href="{{ url('/') }}">首页</a></li>
             <li><a href="#">用户中心</a></li>
             <li><a href="#">消息信息</a></li>
-            <li class="active">这是消息的标题</li>
+            <li class="active">{{$message->title}}</li>
         </ol>
         <div class="panel panel-default" style="width: 35em;margin: 3em auto;">
             <div class="panel-heading">
-                <span>这是消息的标题</span>
+                <span>{{$message->title}}</span>
             </div>
             <div class="panel-body" style="line-height: 1.8em;">
-                <p>这是消息的内容。这是消息的内容。这是消息的内容。这是消息的内容。这是消息的内容。这是消息的内容。</p>
+                <p>{{$message->content}}</p>
             </div>
             <div class="panel-footer" style="background: #FFF;">
                 <a href="#" class="btn btn-default btn-sm" onclick="history.go(-1)">返回</a>
-                <div style="float: right; font-size: 0.9em; color: #858585; text-align: right; line-height: 3em;">系统 |
-                    To 用户名 | 2016-04-04 10:10:10
+                <div style="float: right; font-size: 0.9em; color: #858585; text-align: right; line-height: 3em;">{{$message->sender_user_info->name}}
+                    |
+                    To {{$message->recipient_user_info->name}} | {{$message->add_time}}
                 </div>
             </div>
         </div>

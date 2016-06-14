@@ -59,8 +59,11 @@ class mainController extends Controller
      */
     public function messages(Request $request)
     {
+        $messages = model('notification')->get_notification_list(Auth::user()->id);
 
-        return view('home.messages');
+        return view('home.messages', [
+            'messages' => $messages,
+        ]);
     }
 
     /**
@@ -68,8 +71,11 @@ class mainController extends Controller
      */
     public function message($id)
     {
+        $message = model('notification')->get_notification_by_id($id, Auth::user()->id);
 
-        return view('home.message');
+        return view('home.message', [
+            'message' => $message,
+        ]);
     }
 
 }

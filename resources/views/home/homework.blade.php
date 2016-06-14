@@ -43,7 +43,7 @@
                 <td>{{$val->deadline}}</td>
                 <td>
                     <a href="{{ url('/homework/'.$val->homework_id) }}" class="btn btn-default btn-xs">查看详情</a>
-                    <a href="{{ url('/homework/'.$val->homework_id.'submit/') }}"
+                    <a href="{{ url('/homework/'.$val->homework_id.'/submit/') }}"
                        class="btn btn-default btn-xs">提交作业</a>
                     <!-- 如果作业已经提交，此按钮变成编辑作业，若已过期，加上disabled类 -->
                 </td>

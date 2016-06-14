@@ -75,19 +75,13 @@ class Notification extends Model
 
         $db = DB::table('notification')->where('recipient_uid', intval($recipient_uid));
 
-        $where[] = 'recipient_uid = ' . floatval($recipient_uid);
-
-        if (isset($read_flag)) {
+        if ($read_flag) {
             $db = $db->where('read_flag', intval($read_flag));
         }
 
-        if ($result = $db->get()) {
-            foreach ($result as $val) {
-                $notification_ids[] = $val->notification_id;
-            }
-        }
+        $result = $db->get();
 
-        return $notification_ids;
+        return $result;
     }
 
     public function get_notification_by_id($notification_id, $recipient_uid = null)
@@ -108,7 +102,7 @@ class Notification extends Model
 
         array_walk_recursive($notification_ids, 'intval_string');
 
-        $db = DB::table('notification')->whereIn('notification_id', implode(';', $notification_ids));
+        $db = DB::table('notification')->whereIn('id', $notification_ids);
 
         if ($recipient_uid) {
             $db = $db->where('recipient_uid', intval($recipient_uid));
@@ -119,7 +113,9 @@ class Notification extends Model
         }
 
         foreach ($notification as $key => $val) {
-            $notification_data[$val->notification_id] = $val;
+            $val->recipient_user_info = model('account')->get_user_info_by_uid($val->recipient_uid);
+            $val->sender_user_info = model('account')->get_user_info_by_uid($val->sender_uid);
+            $notification_data[$val->id] = $val;
         }
 
         foreach ($notification_ids as $id) {

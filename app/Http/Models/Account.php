@@ -92,6 +92,21 @@ class Account extends Model
     }
 
     /**
+     * 用户密码验证
+     *
+     * @param string
+     * @param string
+     * @return boolean
+     */
+    public function reset_password($uno, $password)
+    {
+        $uid = $this->get_uid_by_uno($uno);
+        return $this->update_users_fields([
+            'password' => bcrypt($password),
+        ], $uid);
+    }
+
+    /**
      * 通过用户邮箱获取用户信息
      *
      * @param string
@@ -202,6 +217,25 @@ class Account extends Model
         }
 
         return $uids;
+    }
+
+    /**
+     * 通过 UNOS 数组获取UIDS
+     *
+     * @param integer
+     * @return integer
+     */
+    public function get_uid_by_uno($uno)
+    {
+        if (!$uno) {
+            return false;
+        }
+
+        if ($user_info = DB::table('users')->where('uno', $uno)->first()) {
+            return $user_info->id;
+        }
+
+        return false;
     }
 
     /**

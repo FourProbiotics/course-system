@@ -13,22 +13,28 @@
         </ol>
         <div style="margin: 4em auto;width: 30em;">
             <form action="#" class="form-horizontal" method="post">
+                {!! csrf_field() !!}
+                @if ($errors->hasBag('default'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first() }}</strong>
+                    </span>
+                @endif
                 <div class="form-group">
                     <label for="inputOld" class="col-sm-2 control-label">旧密码</label>
                     <div class="col-sm-8">
-                        <input type="password" class="form-control" id="inputOld" placeholder="输入您的旧密码">
+                        <input type="password" class="form-control" name="old_password" placeholder="输入您的旧密码">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputNew" class="col-sm-2 control-label">新密码</label>
                     <div class="col-sm-8">
-                        <input type="password" class="form-control" id="inputNew" placeholder="输入您的新密码">
+                        <input type="password" class="form-control" name="new_password" placeholder="输入您的新密码">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputNewRep" class="col-sm-2 control-label">重复新密码</label>
                     <div class="col-sm-8">
-                        <input type="password" class="form-control" id="inputNewRep" placeholder="重新输入您的新密码">
+                        <input type="password" class="form-control" name="confirm_password" placeholder="重新输入您的新密码">
                     </div>
                 </div>
                 <div class="form-group">
