@@ -20,4 +20,7 @@ return [
             "h" => 100
         )
     ),
+
+    'allowed_upload_types' => 'jpg,jpeg,png,gif,zip,doc,docx,rar,pdf,psd',
+    'upload_size_limit' => ''
 ];

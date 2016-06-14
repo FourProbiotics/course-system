@@ -4,6 +4,9 @@
 Route::get('/', [
     'middleware' => 'web', 'uses' => 'indexController@index']);
 
+Route::get('/download/{id}', [
+    'middleware' => 'web', 'uses' => 'Download\mainController@index'])->where('id', '[0-9]+');
+
 /*Route::group(['middleware' => 'web'], function () {
     Route::auth();
     Route::get('/home', 'HomeController@index');
@@ -34,7 +37,7 @@ Route::get('home/courses', [
     'middleware' => 'web', 'uses' => 'Home\mainController@courses']);
 
 Route::get('home/homework', [
-    'middleware' => 'web', 'uses' => 'Home\mainController@homework']);
+    'middleware' => 'web', 'as' => 'home_homework', 'uses' => 'Home\mainController@homework']);
 
 Route::get('home/messages', [
     'middleware' => 'web', 'uses' => 'Home\mainController@messages']);
@@ -77,7 +80,10 @@ Route::get('homework/{id}', [
     'middleware' => 'web', 'uses' => 'Homework\mainController@homework'])->where('id', '[0-9]+');
 
 Route::get('homework/{id}/submit', [
-    'middleware' => 'web', 'uses' => 'Homework\mainController@submit'])->where('id', '[0-9]+');
+    'middleware' => 'web', 'as' => 'homework_submit', 'uses' => 'Homework\mainController@submit'])->where('id', '[0-9]+');
+
+Route::post('homework/{id}/submit', [
+    'middleware' => 'web', 'uses' => 'Homework\mainController@submit_post'])->where('id', '[0-9]+');
 
 ####################################################
 #admin的相关操作

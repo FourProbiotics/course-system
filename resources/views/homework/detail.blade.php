@@ -9,7 +9,7 @@
         <ol class="breadcrumb">
             <li><a href="{{ url('/') }}">首页</a></li>
             <li><a href="#">用户中心</a></li>
-            <li><a href="#">作业管理</a></li>
+            <li><a href="{{ url('home/homework/') }}">作业管理</a></li>
             <li><a href="#">{{$homework->homework_title}}</a></li>
             <li class="active">详情</li>
         </ol>

@@ -18,7 +18,7 @@ class Resource extends Model
             'resource_content' => $resource_content,
             'add_time' => date('Y-m-d H:i:s', time()),
             'file_location' => htmlspecialchars($file_location),
-            'is_image' => $is_image,
+            //'is_image' => $is_image,
             'item_type' => $item_type,
             'item_id' => $item_id,
         ));
