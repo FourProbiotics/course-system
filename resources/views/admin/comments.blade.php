@@ -23,17 +23,19 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td><a href="{{ url('/admin/student/1/edit') }}">小明</a></td>
-                <td>你好啊</td>
-                <td><a href="{{ url('/course/1') }}">Databases, JavaScript, Ajax 和 PHP</a></td>
-                <td>2016-01-01 11:11:11</td>
-                <td>
-                    <a href="{{ url('/admin/comment/1/reply') }}" class="btn btn-default btn-xs">回复</a>
-                    <a href="{{ url('/admin/comment/1/delete') }}" class="btn btn-default btn-xs">删除</a>
-                </td>
-            </tr>
+            @foreach($comments as $key => $val)
+                <tr>
+                    <th scope="row">{{$val->id}}</th>
+                    <td><a href="{{ url('/admin/student/'.$val->id.'/edit') }}">{{$val->user_info->name}}</a></td>
+                    <td>{{$val->content}}</td>
+                    <td><a href="{{ url('/course/'.$val->id) }}">Course {{$val->course_id}}</a></td>
+                    <td>{{$val->update_time}}</td>
+                    <td>
+                        <a href="{{ url('/admin/comment/'.$val->id.'/reply') }}" class="btn btn-default btn-xs">回复</a>
+                        <a href="{{ url('/admin/comment/'.$val->id.'/delete') }}" class="btn btn-default btn-xs">删除</a>
+                    </td>
+                </tr>
+            @endforeach
             </tbody>
         </table>
     </div>
