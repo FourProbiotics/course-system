@@ -28,14 +28,14 @@
             </thead>
             <tbody>
             <tr>
-                <th scope="row">22210</th>
-                <td><a href="{{ url('/') }}/course/22210">Databases, JavaScript, Ajax 和 PHP</a></td>
-                <td>3/4</td>
-                <td>5</td>
-                <td>9</td>
-                <td>徐利锋</td>
-                <td>2016/2017(1)</td>
-                <td>计算机学院</td>
+                <th scope="row">{{$course->course_id}}</th>
+                <td><a href="{{ url('/') }}/course/{{$course->course_id}}">{{$course->course_name}}</a></td>
+                <td>{{$course->answer_count}}/{{$course->homework_count}}</td>
+                <td>{{$course->resource_count}}</td>
+                <td>{{$course->member_count}}</td>
+                <td>{{$course->teacher_name}}</td>
+                <td>{{$course->course_term}}</td>
+                <td>{{$course->course_college}}</td>
             </tr>
             </tbody>
         </table>

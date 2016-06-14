@@ -25,8 +25,21 @@ class mainController extends Controller
      */
     public function courses()
     {
+        $group_id = Auth::user()->group_id;
+        $group_info = model('group')->get_group_info_by_id($group_id);
 
-        return view('home.courses');
+        $course = model('course')->get_course_info_by_id($group_info->group->course_id);
+
+        $group_list = model('group')->get_group_list_by_course_id($group_info->group->course_id);
+        $member_count = 0;
+        foreach ($group_list as $key => $val) {
+            $member_count += $val->member_count;
+        }
+        $course->member_count = $member_count;
+        $course->resource_count = count(model('resource')->get_resource('course', $group_info->group->course_id));
+        $course->homework_count = count(model('homework')->get_homework_list_by_course_id($group_info->group->course_id));
+        $course->answer_count = count(model('answer')->get_answer_list_by_course_id($group_info->group->course_id, Auth::user()->id));
+        return view('home.courses', ['course' => $course]);
     }
 
     /**
@@ -34,8 +47,11 @@ class mainController extends Controller
      */
     public function homework(Request $request)
     {
-
-        return view('home.homework');
+        $homework_list = model('homework')->get_homework_list_by_uid(Auth::user()->id);
+        //var_dump($homework_list);
+        return view('home.homework', [
+            'homework_list' => $homework_list,
+        ]);
     }
 
     /**

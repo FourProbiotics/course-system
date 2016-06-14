@@ -17,37 +17,39 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">学号</label>
                     <div class="col-sm-10">
-                        <p class="form-control-static">201319630000</p>
+                        <p class="form-control-static">{{$user_info->uno}}</p>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">姓名</label>
                     <div class="col-sm-10">
-                        <p class="form-control-static">小明</p>
+                        <p class="form-control-static">{{$user_info->name}}</p>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">学院</label>
                     <div class="col-sm-10">
-                        <p class="form-control-static">国际学院</p>
+                        <p class="form-control-static">{{$user_info->college}}</p>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">专业</label>
+                    <label class="col-sm-2 control-label">班级</label>
                     <div class="col-sm-10">
-                        <p class="form-control-static">软件工程（中外合作）</p>
+                        <p class="form-control-static">{{$user_info->class}}</p>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputMail" class="col-sm-2 control-label">邮箱</label>
                     <div class="col-sm-4">
-                        <input type="email" class="form-control" id="inputMail" placeholder="常用邮箱">
+                        <input type="email" class="form-control" id="inputMail" value="{{$user_info->email}}"
+                               placeholder="常用邮箱">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputPhone" class="col-sm-2 control-label">手机号码</label>
                     <div class="col-sm-4">
-                        <input type="tel" class="form-control" id="inputPhone" placeholder="常用手机号码">
+                        <input type="tel" class="form-control" id="inputPhone" value="{{$user_info->mobile}}"
+                               placeholder="常用手机号码">
                     </div>
                 </div>
                 <div class="form-group">

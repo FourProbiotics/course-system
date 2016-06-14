@@ -87,6 +87,21 @@ class Answer extends Model
         return $this->remove_answer_by_ids($answer_ids);
     }
 
+    public function get_answer_list_by_homework_ids($homework_ids)
+    {
+        if (!is_array($homework_ids)) {
+            return false;
+        }
+
+        $answer_list = array();
+
+        foreach ($homework_ids as $key => $id) {
+            $answer_list[] = $this->get_answer_list_by_homework_id($id);
+        }
+
+        return $answer_list;
+    }
+
     public function get_answer_list_by_homework_id($homework_id)
     {
         if ($answer_list = DB::table('homework_answers')->where('homework_id', intval($homework_id))->orderBy('add_time', 'desc')->get()) {
@@ -130,5 +145,45 @@ class Answer extends Model
         }
 
         return true;
+    }
+
+    public function get_answer_list_by_course_id($course_id, $uid = null)
+    {
+        $homework_ids = model('homework')->get_homework_ids_by_course_id($course_id);
+        $db = DB::table('homework_answers')->whereIn('homework_id', $homework_ids)->orderBy('add_time', 'desc');
+
+        if ($uid) {
+            $db->where('uid', $uid);
+        }
+
+        $posts_index = $db->get();
+
+        return $posts_index;
+    }
+
+    public function get_answer_list_by_uid($uid, $homework_id = null)
+    {
+        $db = DB::table('homework_answers')->where('uid', $uid)->orderBy('add_time', 'desc');
+
+        if ($homework_id) {
+            $db->where('homework_id', $homework_id);
+        }
+
+        $posts_index = $db->get();
+
+        return $posts_index;
+    }
+
+    public function get_answer_by_uid($uid, $homework_id = null)
+    {
+        $db = DB::table('homework_answers')->where('uid', $uid)->orderBy('add_time', 'desc');
+
+        if ($homework_id) {
+            $db->where('homework_id', $homework_id);
+        }
+
+        $posts_index = $db->first();
+
+        return $posts_index;
     }
 }

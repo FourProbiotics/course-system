@@ -25,9 +25,9 @@ class mainController extends Controller
      */
     public function index()
     {
-        $course_list = M::model('Course')->get_course_info_by_ids([1, 2]);
+        $courses = model('course')->get_courses_list(0, 50);
         //var_dump($course_list);
-        return view('courses.index', [$course_list]);
+        return view('courses.index', ['courses' => $courses,]);
     }
 
     /**
@@ -35,8 +35,17 @@ class mainController extends Controller
      */
     public function course($id)
     {
-        //$course_info = DB::table('courses')->where('course_id', floatval($id))->first();
-        return view('courses.detail');
+        $course_info = model('course')->get_course_info_by_id($id);
+        if (!$course_info) {
+            return response('找不到课程.', 401);
+        }
+        $resource = model('resource')->get_resource('course', $id);
+        $comments = model('comment')->get_comment_list_by_course_id($id);
+        return view('courses.detail', [
+            'course_info' => $course_info,
+            'resource' => $resource,
+            'comments' => $comments,
+        ]);
     }
 
 }

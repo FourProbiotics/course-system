@@ -43,14 +43,14 @@ class DatabaseSeeder extends Seeder
 
         DB::table('courses')->insert([
             'course_name' => '测试课程1',
-            'course_content' => '测试内容1',
+            'course_content' => 'PHP是超级文本预处理语言Hypertext Preprocessor的缩写。PHP是一种HTML内嵌式的语言，是一种在服务器端执行的嵌入HTML文档的脚本语言，语言的风格有类似于C语言，被广泛的运用。PHP文件一般由专业程序开发人员编写。',
             'teacher_name' => '徐利锋',
             'course_term' => '2015/2016(1)',
             'course_college' => '计算机学院',
             'add_time' => date('Y-m-d H:i:s', time()),
             'update_time' => date('Y-m-d H:i:s', time()),
-            'teach_outline' => '测试：这是授课大纲(text)',
-            'teach_plan' => '测试：这是授课计划(text)',
+            'teach_outline' => htmlspecialchars('测试：这是授课大纲(text)'),
+            'teach_plan' => ('<img src="http://202.120.143.134/Download/20150918154248001.jpg">'),
             'teach_ppt' => serialize([1, 2]),//这是教案(resource id)
             'teach_book' => serialize([
                 ['name' => '测试：这是教材(serialize array)'],
@@ -65,8 +65,8 @@ class DatabaseSeeder extends Seeder
             'course_college' => '计算机学院',
             'add_time' => date('Y-m-d H:i:s', time()),
             'update_time' => date('Y-m-d H:i:s', time()),
-            'teach_outline' => '测试：这是授课大纲(text)',
-            'teach_plan' => '测试：这是授课计划(text)',
+            'teach_outline' => htmlspecialchars('测试：这是授课大纲(text)'),
+            'teach_plan' => htmlspecialchars('测试：这是授课计划(text)'),
             'teach_ppt' => serialize([1, 2]),
             'teach_book' => serialize(array(
                 ['name' => '新华字典', 'url' => 'http://baidu.com'],
@@ -165,12 +165,14 @@ class DatabaseSeeder extends Seeder
 
         DB::table('groups')->insert([
             'score' => 0,
+            'course_id' => 1,
             'add_time' => date('Y-m-d H:i:s', time()),
             'update_time' => date('Y-m-d H:i:s', time()),
         ]);
 
         DB::table('groups')->insert([
             'score' => 0,
+            'course_id' => 1,
             'add_time' => date('Y-m-d H:i:s', time()),
             'update_time' => date('Y-m-d H:i:s', time()),
         ]);

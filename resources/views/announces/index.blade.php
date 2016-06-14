@@ -20,18 +20,14 @@
             </tr>
             </thead>
             <tbody>
+            @foreach($announces as $key => $val)
             <tr>
                 <th scope="row">1</th>
-                <td><a href="{{ url('/announce/1') }}">这是公告的标题</a></td>
-                <td>公告</td>
-                <td>2016-04-04 10:20:30</td>
+                <td><a href="{{ url('/announce/'.$val->id) }}">{{$val->title}}</a></td>
+                <td>{{$val->type}}</td>
+                <td>{{$val->update_time}}</td>
             </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td><a href="{{ url('/announce/2') }}">这是公告的标题</a></td>
-                <td>公告</td>
-                <td>2016-04-04 10:20:30</td>
-            </tr>
+            @endforeach
             </tbody>
         </table>
     </div>

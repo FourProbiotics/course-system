@@ -15,6 +15,7 @@ class CreateGroupsTable extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->increments('group_id')->comment = '分组id';
             $table->integer('score')->comment = '分数';
+            $table->integer('course_id')->comment = '课程id';
             $table->timestamp('add_time')->comment = '添加时间';
             $table->timestamp('update_time')->comment = '更新时间';
         });

@@ -25,8 +25,9 @@ class mainController extends Controller
      */
     public function profile()
     {
-
-        return view('account.profile');
+        $uid = Auth::user()->id;
+        $user_info = model('account')->get_user_info_by_uid($uid);
+        return view('account.profile', ['user_info' => $user_info]);
     }
 
     /**

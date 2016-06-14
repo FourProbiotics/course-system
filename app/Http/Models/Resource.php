@@ -49,12 +49,12 @@ class Resource extends Model
         return false;
     }
 
-    public function get_attach($item_type, $item_id)
+    public function get_resource($item_type, $item_id)
     {
         if (!is_numeric($item_id)) {
             return false;
         }
-        $resource = DB::table('resource')->where('item_id', intval($item_id))->where('item_type', $item_type)->and->get();
+        $resource = DB::table('resource')->where('item_id', intval($item_id))->where('item_type', $item_type)->get();
 
         return $resource;
     }

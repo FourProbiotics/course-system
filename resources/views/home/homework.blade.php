@@ -24,19 +24,31 @@
             </tr>
             </thead>
             <tbody>
+            @foreach($homework_list as $key => $val)
             <tr>
                 <th scope="row">1</th>
-                <td><a href="{{ url('/course/1') }}">Databases, JavaScript, Ajax 和 PHP</a></td>
-                <td><a href="{{ url('/homework/1') }}">t2.实现简单微博</a></td>
-                <td>未提交</td>
-                <td>未知</td>
-                <td>2016-04-04 23:59</td>
+                <td><a href="{{ url('/course/'.$val->course_info->course_id) }}">{{$val->course_info->course_name}}</a>
+                </td>
+                <td><a href="{{ url('/homework/'.$val->homework_id) }}">{{$val->homework_title}}</a></td>
+                @if($val->answer)
+                    <td>未提交</td>
+                @else
+                    <td>已提交</td>
+                @endif
+                @if($val->answer && $val->answer->read_flag)
+                    <td>{{$val->answer->score}}</td>
+                @else
+                    <td>未知</td>
+                @endif
+                <td>{{$val->deadline}}</td>
                 <td>
-                    <a href="{{ url('/homework/1') }}" class="btn btn-default btn-xs">查看详情</a>
-                    <a href="{{ url('/homework/submit/1') }}" class="btn btn-default btn-xs">提交作业</a>
+                    <a href="{{ url('/homework/'.$val->homework_id) }}" class="btn btn-default btn-xs">查看详情</a>
+                    <a href="{{ url('/homework/'.$val->homework_id.'submit/') }}"
+                       class="btn btn-default btn-xs">提交作业</a>
                     <!-- 如果作业已经提交，此按钮变成编辑作业，若已过期，加上disabled类 -->
                 </td>
             </tr>
+            @endforeach
             </tbody>
         </table>
     </div>

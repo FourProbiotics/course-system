@@ -130,4 +130,35 @@ class Homework extends Model
 
         return $posts_index;
     }
+
+    public function get_homework_ids_by_course_id($course_id)
+    {
+        $posts_index = DB::table('homework')->where('course_id', $course_id)->orderBy('add_time', 'desc')->get();
+
+        $ids = array();
+
+        foreach ($posts_index as $key => $val) {
+            $ids[] = $val->homework_id;
+        }
+
+        return $ids;
+    }
+
+    public function get_homework_list_by_course_id($course_id)
+    {
+        $posts_index = DB::table('homework')->where('course_id', $course_id)->orderBy('add_time', 'desc')->get();
+
+        return $posts_index;
+    }
+
+    public function get_homework_list_by_uid($uid)
+    {
+        $group_info = model('group')->get_group_info_by_uid($uid);
+        $posts_index = DB::table('homework')->where('course_id', $group_info->course_id)->orderBy('add_time', 'desc')->get();
+        foreach ($posts_index as $key => $val) {
+            $val->answer = model('answer')->get_answer_by_uid($uid, $val->homework_id);
+            $val->course_info = model('course')->get_course_info_by_id($val->course_id);
+        }
+        return $posts_index;
+    }
 }

@@ -90,7 +90,7 @@ class Announce extends Model
         // 以后再说
     }
 
-    public function get_announces_list($page = 1, $per_page = 10)
+    public function get_announces_list($page = 0, $per_page = 10)
     {
         $posts_index = DB::table('announces')->
         skip(intval($page) * intval($per_page))->

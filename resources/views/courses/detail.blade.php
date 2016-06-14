@@ -8,8 +8,8 @@
     <div id="main-width">
         <ol class="breadcrumb">
             <li><a href="{{ url('/') }}">首页</a></li>
-            <li><a href="#">全部课程</a></li>
-            <li class="active">Databases, JavaScript, Ajax 和 PHP</li>
+            <li><a href="{{ url('/courses') }}">全部课程</a></li>
+            <li class="active">{{$course_info->course_name}}</li>
         </ol>
         <div style="width: 100%;">
             <div class="pull-left" style="width: 46em;">
@@ -28,24 +28,31 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <th scope="row">22210</th>
-                            <td>徐利锋</td>
-                            <td>2016/2017(1)</td>
-                            <td>计算机学院</td>
+                            <th scope="row">{{$course_info->course_id}}</th>
+                            <td>{{$course_info->teacher_name}}</td>
+                            <td>{{$course_info->course_term}}</td>
+                            <td>{{$course_info->course_college}}</td>
                         </tr>
                         </tbody>
                     </table>
                     <div class="panel-body" style="max-height: 40em;overflow: auto;">
                         <div class="course-item">
                             <div class="title">课程简介</div>
-                            <div class="content"><p>PHP是超级文本预处理语言Hypertext Preprocessor的缩写。PHP
-                                    是一种HTML内嵌式的语言，是一种在服务器端执行的嵌入HTML文档的脚本语言，语言的风格有类似于C语言，被广泛的运用。PHP文件一般由专业程序开发人员编写。</p>
+                            <div class="content">
+                                {{$course_info->course_content}}
                             </div>
                         </div>
                         <div class="course-item">
-                            <div class="title">教学日历</div>
-                            <div class="content"><p><img src="http://202.120.143.134/Download/20150918154248001.jpg">
-                                </p></div>
+                            <div class="title">教学大纲</div>
+                            <div class="content">
+                                {{$course_info->teach_outline}}
+                            </div>
+                        </div>
+                        <div class="course-item">
+                            <div class="title">教学计划</div>
+                            <div class="content">
+                                <?php echo $course_info->teach_plan; ?>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -56,27 +63,31 @@
                         <h3 class="panel-title">课程资源</h3>
                     </div>
                     <div class="panel-body" style="max-height: 18em;overflow: auto;padding: 0;">
-                        <p class="hidden" style="text-align: center;">登录后才能查看</p><!-- 未登录时显示 -->
-                        <table class="table table-td-padding-2" style="font-size: 0.9em;"><!-- 登录后显示 -->
-                            <thead>
-                            <tr>
-                                <th>名称</th>
-                                <th>上传时间</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td><a href="{{ url('/resource/1') }}">Chapter1. PHP is the best programing language</a>
-                                </td>
-                                <td>2016-03-03</td>
-                            </tr>
-                            <tr>
-                                <td><a href="{{ url('/resource/1') }}">Chapter2. PHP is the best programing language</a>
-                                </td>
-                                <td>2016-03-03</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        @if (Auth::guest())
+                            <p style="text-align: center;"><a href="{{ url('/login') }}">登录</a>后才能查看</p><!-- 未登录时显示 -->
+                        @else
+                            @if(!$resource)
+                                <p style="text-align: center;">空空如也</p>
+                            @else
+                                <table class="table table-td-padding-2" style="font-size: 0.9em;"><!-- 登录后显示 -->
+                                    <thead>
+                                    <tr>
+                                        <th>名称</th>
+                                        <th>上传时间</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($resource as $key => $val)
+                                        <tr>
+                                            <td><a href="{{ url('/resource/'.$val->id) }}">{{$val->file_name}}</a>
+                                            </td>
+                                            <td>{{$val->add_time}}</td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            @endif
+                        @endif
                     </div>
                 </div>
             </div>
@@ -99,18 +110,14 @@
                     <div class="panel-body" style="padding: 0;max-height: 18.4em;overflow: auto;">
                         <table class="table table-td-padding-2" style="font-size: 0.9em;">
                             <tbody>
+                            @foreach($comments as $key => $val)
                             <tr>
                                 <td>
-                                    <span>留言内容留言内容留言内容留言内容留言内容留言内容留言内容</span>
-                                    <span class="course-comment-item">小明@2016-06-06</span>
+                                    <span>{{$val->content}}</span>
+                                    <span class="course-comment-item">{{$val->user_info->name}}@ {{$val->add_time}}</span>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <span>留言内容留言内容留言内容留言内容留言内容留言内容留言内容</span>
-                                    <span class="course-comment-item">小明@2016-06-06</span>
-                                </td>
-                            </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>

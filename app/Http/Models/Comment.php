@@ -5,7 +5,7 @@ namespace App\Http\Models;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 
-class Comments extends Model
+class Comment extends Model
 {
     /**
      * 通过id获取评论信息
@@ -50,7 +50,9 @@ class Comments extends Model
     public function get_comment_list_by_course_id($course_id, $limit = 20)
     {
         $comment_list = DB::table('comments')->take(intval($limit))->where('course_id', $course_id)->orderBy('add_time', 'desc')->get();
-
+        foreach ($comment_list as $key => $val) {
+            $val->user_info = model('account')->get_user_info_by_uid($val->uid);
+        }
         return $comment_list;
     }
 

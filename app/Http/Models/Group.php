@@ -2,6 +2,7 @@
 
 namespace App\Http\Models;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Group extends Model
@@ -18,8 +19,27 @@ class Group extends Model
             return false;
         }
 
-        $data['group'] = DB::table('groups')->where('group_id', intval($group_id))->first();
-        $data['member'] = DB::table('users')->where('group_id', intval($group_id))->get();
+        $data = new \stdClass();
+        $data->group = DB::table('groups')->where('group_id', intval($group_id))->first();
+        $data->member = DB::table('users')->where('group_id', intval($group_id))->get();
+
+        return $data;
+    }
+
+    /**
+     * 通过uid获取分组信息
+     *
+     * @param integer
+     * @return boolean
+     */
+    public function get_group_info_by_uid($uid)
+    {
+        if (!$uid) {
+            return false;
+        }
+        $user_info = DB::table('users')->where('id', intval($uid))->first();
+
+        $data = DB::table('groups')->where('group_id', intval($user_info->group_id))->first();
 
         return $data;
     }
@@ -33,7 +53,24 @@ class Group extends Model
     {
         $groups = DB::table('groups')->first();
         foreach ($groups as $key => $val) {
-            $groups['member'] = DB::table('users')->where('group_id', intval($val->group_id))->get();
+            $groups->member = DB::table('users')->where('group_id', intval($val->group_id))->get();
+        }
+
+        return $groups;
+    }
+
+    /**
+     * 获取分组列表
+     *
+     * @return boolean
+     */
+    public function get_group_list_by_course_id($course_id)
+    {
+        $groups = DB::table('groups')->where('course_id', $course_id)->get();
+
+        foreach ($groups as $key => $val) {
+            $val->member = DB::table('users')->where('group_id', intval($val->group_id))->get();
+            $val->member_count = count($val->member);
         }
 
         return $groups;

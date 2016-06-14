@@ -21,13 +21,17 @@
             </tr>
             </thead>
             <tbody>
+            <?php foreach ($courses as $key => $val) {?>
             <tr>
-                <th scope="row">22210</th>
-                <td><a href="{{ url('/') }}/course/22210">Databases, JavaScript, Ajax 和 PHP</a></td>
-                <td>徐利锋</td>
-                <td>2016/2017(1)</td>
-                <td>计算机学院</td>
+                <th scope="row">{{$val->course_id}}</th>
+                <td>
+                    <a href="{{ url('/') }}/course/{{$val->course_id}}/">{{$val->course_name}}</a>
+                </td>
+                <td>{{$val->teacher_name}}</td>
+                <td>{{$val->course_term}}</td>
+                <td>{{$val->course_college}}</td>
             </tr>
+            <?php } ?>
             </tbody>
         </table>
     </div>

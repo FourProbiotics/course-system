@@ -26,7 +26,8 @@ class mainController extends Controller
     public function index()
     {
 
-        return view('announces.index');
+        $announces = model('announce')->get_announces_list(0, 50);
+        return view('announces.index', ['announces' => $announces]);
     }
 
     /**
@@ -34,8 +35,10 @@ class mainController extends Controller
      */
     public function announce($id)
     {
-
-        return view('announces.detail');
+        $announce = model('announce')->get_announce_info_by_id($id);
+        return view('announces.detail', [
+            'announce' => $announce,
+        ]);
     }
 
 }

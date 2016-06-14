@@ -103,7 +103,7 @@ class Account extends Model
             return false;
         }
 
-        if ($uid = DB::table('users')->select('uid')->where('email', $email)->first()) {
+        if ($uid = DB::table('users')->select('id')->where('email', $email)->first()) {
             return $this->get_user_info_by_uid($uid);
         }
 
@@ -128,8 +128,16 @@ class Account extends Model
             return false;
         }
 
-        if (!$user_info = DB::table('users')->where('uid', floatval($uid))->first()) {
+        if (!$user_info = DB::table('users')->where('id', floatval($uid))->first()) {
             return false;
+        } else {
+            $user_info->uid = $user_info->id;
+
+            if (!$user_info->name) {
+                $user_info->name = $user_info->uno;
+            }
+
+            unset($user_info->password);
         }
 
         return $user_info;
@@ -160,8 +168,12 @@ class Account extends Model
 
         }
 
-        if ($user_info = DB::table('users')->whereIn('uid', $uids)->get()) {
+        if ($user_info = DB::table('users')->whereIn('id', $uids)->get()) {
             foreach ($user_info as $key => $val) {
+                $val->uid = $val->id;
+                if (!$val->name) {
+                    $val->name = $val->uno;
+                }
                 $user_list[$val->uid] = $val;
             }
         }
@@ -260,14 +272,14 @@ class Account extends Model
     public function update_users_fields($update_data, $uid)
     {
         return DB::table('users')
-            ->where('uid', floatval($uid))
+            ->where('id', floatval($uid))
             ->update($update_data);
     }
 
     public function remove_user_by_uid($uid)
     {
         if ($user_info = $this->get_user_info_by_uid($uid)) {
-            DB::table('users')->where('uid', intval($uid))->delete();
+            DB::table('users')->where('id', intval($uid))->delete();
             //删除相关信息，以后再说
         }
 
