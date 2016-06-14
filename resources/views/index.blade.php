@@ -26,14 +26,16 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <?php foreach ($courses as $key => $val) {?>
                         <tr>
-                            <th scope="row">22210</th>
+                            <th scope="row">{{$val->course_id}}</th>
                             <td>
-                                <a href="./course.php">Databases, JavaScript, Ajax 和 PHP</a>
+                                <a href="/course/{{$val->course_id}}/">{{$val->course_name}}</a>
                             </td>
-                            <td>徐利锋</td>
-                            <td>计算机学院</td>
+                            <td>{{$val->teacher_name}}</td>
+                            <td>{{$val->course_college}}</td>
                         </tr>
+                        <?php } ?>
                         </tbody>
                     </table>
                 </div>
@@ -52,14 +54,12 @@
                             </tr>
                             </thead>
                             <tbody>
+                            <?php foreach ($announces as $key => $val) {?>
                             <tr>
-                                <td><a href="#">这是公告的标题</a></td>
-                                <td>2016-04-04 10:20:30</td>
+                                <td><a href="/announces/{{$val->id}}/">{{$val->title}}</a></td>
+                                <td>{{$val->update_time}}</td>
                             </tr>
-                            <tr>
-                                <td><a href="#">这是公告的标题</a></td>
-                                <td>2016-04-04 10:20:30</td>
-                            </tr>
+                            <?php } ?>
                             </tbody>
                         </table>
                     </div>

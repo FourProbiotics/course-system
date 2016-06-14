@@ -29,8 +29,8 @@ class indexController extends Controller
      */
     public function index()
     {
-        $courses = model('course')->get_courses_list(1, 50);
-        $announces = model('announce')->get_announces_list(1, 50);
-        return view('index', [$courses, $announces]);
+        $courses = model('course')->get_courses_list(0, 50);
+        $announces = model('announce')->get_announces_list(0, 50);
+        return view('index', ['courses' => $courses, 'announces' => $announces]);
     }
 }
