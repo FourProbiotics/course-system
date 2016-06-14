@@ -176,7 +176,7 @@ class Answer extends Model
 
     public function get_answer_by_uid($uid, $homework_id = null)
     {
-        $db = DB::table('homework_answers')->where('uid', $uid)->orderBy('add_time', 'desc');
+        $db = DB::table('homework_answers')->where('uid', $uid);
 
         if ($homework_id) {
             $db->where('homework_id', $homework_id);
