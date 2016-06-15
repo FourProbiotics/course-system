@@ -102,9 +102,14 @@ class Answer extends Model
         return $answer_list;
     }
 
-    public function get_answer_list_by_homework_id($homework_id)
+    public function get_answer_list_by_homework_id($homework_id, $read_flag = null)
     {
-        if ($answer_list = DB::table('homework_answers')->where('homework_id', intval($homework_id))->orderBy('add_time', 'desc')->get()) {
+        $db = DB::table('homework_answers')->where('homework_id', intval($homework_id))->orderBy('homework_id', 'desc');
+        if($read_flag)
+        {
+            $db->where('read_flag', $read_flag);
+        }
+        if ($answer_list = $db->get()) {
             foreach ($answer_list as $key => $val) {
                 $uids[] = $val->uid;
             }

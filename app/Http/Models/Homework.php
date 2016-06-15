@@ -128,6 +128,11 @@ class Homework extends Model
     {
         $posts_index = DB::table('homework')->skip(intval($page) * intval($per_page))->take(intval($per_page))->orderBy('add_time', 'desc')->get();
 
+        foreach ($posts_index as $key =>$val)
+        {
+            $val->course_info = model('course')->get_course_info_by_id($val->course_id);
+        }
+
         return $posts_index;
     }
 

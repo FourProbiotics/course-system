@@ -230,8 +230,17 @@ class mainController extends Controller
      */
     public function homework()
     {
+        $homework_list = model('homework')->get_homework_list(0,200);
+        foreach ($homework_list as $key => $val)
+        {
+            $answer = model('answer')->get_answer_list_by_homework_id($val->homework_id);
+            $answer_has_read = model('answer')->get_answer_list_by_homework_id($val->homework_id, 0);
+            $val->marking_status = count($answer_has_read).'/'.count($answer);
+        }
 
-        return view('admin.homework');
+        return view('admin.homework', [
+            'homework_list'=> $homework_list,
+        ]);
     }
 
     /**
@@ -255,10 +264,10 @@ class mainController extends Controller
     /**
      * 返回admin作业详情视图
      */
-    public function homework_detail()
+    public function homework_answer()
     {
 
-        return view('admin.homework_detail');
+        return view('admin.homework_answer');
     }
 
     /**

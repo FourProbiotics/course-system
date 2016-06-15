@@ -127,8 +127,8 @@ Route::group(['as' => 'admin::'], function () {
         'middleware' => 'web', 'uses' => 'Admin\mainController@homework_new']);
     Route::get('admin/homework/{id}/edit', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@homework_edit'])->where('id', '[0-9]+');
-    Route::get('admin/homework/{id}/detail', [
-        'middleware' => 'web', 'uses' => 'Admin\mainController@homework_detail'])->where('id', '[0-9]+');
+    Route::get('admin/homework/{id}/answer', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@homework_answer'])->where('id', '[0-9]+');
     Route::get('admin/homework/{id}/marking', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@homework_marking'])->where('id', '[0-9]+');
 
