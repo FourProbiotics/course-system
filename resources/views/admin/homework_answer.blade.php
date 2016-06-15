@@ -21,7 +21,6 @@
                 <th>标题</th>
                 <th>附件</th>
                 <th>分数</th>
-                <th>审阅</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -37,8 +36,7 @@
                         <a href="{{ url('/download/'.$v->id) }}">{{$v->file_name}}</a>
                     @endforeach
                 </td>
-                <td>{{$val->score}}</td>
-                <td>{{$val->read_flag?'已批改':'未批改'}}</td>
+                <td>{{$val->read_flag?$val->score:'未批改'}}</td>
                 <td>
                     <a href="{{ url('/admin/homework/'.$val->homework_info->homework_id.'/answer/'.$val->answer_id.'/marking') }}" class="btn btn-default btn-xs">详细&评分</a>
                 </td>
