@@ -355,5 +355,23 @@ class Account extends Model
         return $uids;
     }
 
+    public function get_user_list_by_course_id($course_id)
+    {
+        $group_list = model('group')->get_group_list_by_course_id($course_id);
+        $uids = array();
+        foreach ($group_list as $key => $val)
+        {
+            foreach ($val->member as $k => $v)
+            {
+                $uids[] = $v->id;
+            }
+        }
+
+        $uids = array_unique($uids);
+        sort($uids);
+
+        return $this->get_user_info_by_uids($uids);
+    }
+
 
 }

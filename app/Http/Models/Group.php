@@ -93,6 +93,7 @@ class Group extends Model
 
         foreach ($groups as $key => $val) {
             $val->member = DB::table('users')->where('group_id', intval($val->group_id))->get();
+            $val->course_info = model('course')->get_course_info_by_id($val->course_id);
             $val->member_count = count($val->member);
         }
 

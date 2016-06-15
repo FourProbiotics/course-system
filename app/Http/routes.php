@@ -93,11 +93,11 @@ Route::post('homework/{id}/submit', [
 ####################################################
 Route::group(['as' => 'admin::'], function () {
     Route::get('admin/', [
-        'as' => 'setting', 'middleware' => 'web', 'uses' => 'Admin\mainController@index']);
+         'middleware' => 'web', 'uses' => 'Admin\mainController@index']);
     Route::get('admin/setting', [
         'as' => 'setting', 'middleware' => 'web', 'uses' => 'Admin\mainController@setting']);
     Route::post('admin/setting', [
-        'as' => 'setting', 'middleware' => 'web', 'uses' => 'Admin\mainController@setting_post']);
+        'middleware' => 'web', 'uses' => 'Admin\mainController@setting_post']);
 
     Route::get('admin/messages', [
         'as' => 'messages', 'middleware' => 'web', 'uses' => 'Admin\mainController@messages']);
@@ -109,11 +109,15 @@ Route::group(['as' => 'admin::'], function () {
     Route::get('admin/courses', [
         'as' => 'courses', 'middleware' => 'web', 'uses' => 'Admin\mainController@courses']);
     Route::get('admin/course/new', [
-        'middleware' => 'web', 'uses' => 'Admin\mainController@course_new']);
-    Route::get('admin/course/{id}/edit', [
+        'as' => 'course_new', 'middleware' => 'web', 'uses' => 'Admin\mainController@course_new']);
+    Route::post('admin/course/new', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@course_new_post']);
+    Route::get('admin/course/{course_id}/edit', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@course_edit'])->where('id', '[0-9]+');
-    Route::get('admin/course/{id}/students', [
+    Route::get('admin/course/{course_id}/students', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@course_students'])->where('id', '[0-9]+');
+    Route::get('admin/course/{course_id}/groups', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@course_groups'])->where('course_id', '[0-9]+');
 
     Route::get('admin/homework', [
         'as' => 'homework', 'middleware' => 'web', 'uses' => 'Admin\mainController@homework']);

@@ -13,50 +13,73 @@
             <li class="active">编辑课程</li>
         </ol>
         <form class="form-horizontal" action="#" method="post">
+            @if ($errors->hasBag('default'))
+                <span class="help-block">
+                            <strong>{{ $errors->first() }}</strong>
+                        </span>
+            @endif
+            {!! csrf_field() !!}
             <div class="form-group">
                 <label for="inputID" class="col-sm-2 control-label">编号</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="inputID" placeholder="课程编号">
+                    <input type="text" class="form-control" id="inputID" placeholder="课程编号" value="{{$course_info->course_id}}">
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputName" class="col-sm-2 control-label">课程名</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" id="inputName" placeholder="课程名">
+                    <input type="text" class="form-control" id="inputName" placeholder="课程名" value="{{$course_info->course_name}}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputTerm" class="col-sm-2 control-label">学期</label>
+                <div class="col-sm-4">
+                    <select name="term">
+                        @for($i = date('Y') - 1; $i < date('Y') + 4; $i++)
+                            <option value ="{{$i}}/{{$i+1}}(1)">{{$i}}/{{$i+1}}(1)</option>
+                            <option value ="{{$i}}/{{$i+1}}(2)">{{$i}}/{{$i+1}}(1)</option>
+                        @endfor
+                    </select>
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputTeacher" class="col-sm-2 control-label">教师</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" id="inputTeacher" placeholder="授课教师">
+                    <input type="text" class="form-control" id="inputTeacher" placeholder="授课教师" value="{{$course_info->teacher_name}}">
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputIns" class="col-sm-2 control-label">学院</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" id="inputIns" placeholder="开课学院">
+                    <input type="text" class="form-control" id="inputIns" placeholder="开课学院" value="{{$course_info->course_college}}">
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputDesc" class="col-sm-2 control-label">描述</label>
+                <label for="inputDesc" class="col-sm-2 control-label">课程简介</label>
                 <div class="col-sm-8">
-                    <textarea rows="5" name="content" class="form-control" id="inputDesc" placeholder="课程描述"></textarea>
+                    <textarea rows="5" name="content" class="form-control" id="inputDesc" placeholder="课程描述">{{$course_info->course_content}}</textarea>
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputContent" class="col-sm-2 control-label">教学日历</label>
+                <label for="inputDesc" class="col-sm-2 control-label">教学大纲</label>
                 <div class="col-sm-8">
-                    <textarea rows="5" name="content" class="form-control" id="inputContent"
-                              placeholder="公告内容"></textarea>
-                    <script>CKEDITOR.replace('inputContent');</script>
+                    <script id="teach_outline" name="teach_outline" type="text/plain"><?php echo $course_info->teach_outline; ?></script>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputContent" class="col-sm-2 control-label">教学计划</label>
+                <div class="col-sm-8">
+                    <script id="teach_plan" name="teach_plan" type="text/plain"><?php echo $course_info->teach_plan; ?></script>
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputFile" class="col-sm-2 control-label">附件</label>
                 <div class="col-sm-8">
-                    <p class="form-control-static"><a href="#">xxxx.zip</a></p>
+                    @if(isset($course_info->resource))
+                    <p class="form-control-static"><a href="#">{{$course_info->resource->file_name}}</a></p>
+                    @endif
                     <input type="file" name="file" id="inputFile">
-                    <p class="help-block">支持格式： .zip, .rar, .doc, .docx, .pdf.</p>
+                    <p class="help-block">支持格式： {{get_config('allowed_upload_types')}}</p>
                 </div>
             </div>
             <div class="form-group">
@@ -67,4 +90,9 @@
             </div>
         </form>
     </div>
+    <!-- 实例化编辑器 -->
+    <script type="text/javascript">
+        var ue = UE.getEditor('teach_plan');
+        UE.getEditor('teach_outline');
+    </script>
 @endsection

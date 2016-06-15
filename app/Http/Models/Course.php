@@ -21,6 +21,10 @@ class Course extends Model
             return false;
         }
 
+        $course = DB::table('courses')->where('course_id', intval($course_id))->first();
+
+        $course->resource = model('resource')->get_resource('course', $course_id);
+
         return DB::table('courses')->where('course_id', intval($course_id))->first();
     }
 
@@ -67,8 +71,8 @@ class Course extends Model
             'course_college' => $course_college,
             'add_time' => date('Y-m-d H:i:s', time()),
             'update_time' => date('Y-m-d H:i:s', time()),
-            'teach_outline' => $teach_outline,
-            'teach_plan' => $teach_plan,
+            'teach_outline' => $teach_outline?$teach_outline:'暂无',
+            'teach_plan' => $teach_plan?$teach_plan:'暂无',
             'teach_ppt' => serialize($teach_ppt),//这是教案(resource id)
             'teach_book' => serialize($teach_book),
         );
@@ -152,7 +156,7 @@ class Course extends Model
 
     public function get_courses_list($page = 1, $per_page = 10)
     {
-        $posts_index = DB::table('courses')->skip(intval($page) * intval($per_page))->take(intval($per_page))->orderBy('add_time', 'desc')->get();
+        $posts_index = DB::table('courses')->skip(intval($page) * intval($per_page))->take(intval($per_page))->orderBy('course_id', 'desc')->get();
 
         return $posts_index;
     }

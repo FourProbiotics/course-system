@@ -11,6 +11,7 @@ use DB;
 use Auth;
 use Config;
 use App\User;
+use Validator;
 use Redirect;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -125,8 +126,10 @@ class mainController extends Controller
      */
     public function courses()
     {
-
-        return view('admin.courses');
+        $course_list = model('course')->get_courses_list(0,200);
+        return view('admin.courses', [
+            'course_list' => $course_list,
+        ]);
     }
 
     /**
@@ -138,22 +141,67 @@ class mainController extends Controller
         return view('admin.course_new');
     }
 
+    public function course_new_post(Request $request)
+    {
+        $name = $request->get('name');
+        $teacher = $request->get('teacher');
+        $college = $request->get('college');
+        $term = $request->get('term');
+        $content = $request->get('content');
+        $teach_outline = $request->get('teach_outline');
+        $teach_plan = $request->get('teach_plan');
+
+        if(!$name || !$teacher ||!$college ||!$term)
+        {
+            return Redirect::back()
+                ->withErrors('名称、教师、学院、学期必须填写')
+                ->withInput();
+        }
+        
+        if(!model('course')->save_course($name, $content, $term, $teach_outline, $teach_plan, $college, $teacher))
+        {
+            return Redirect::back()
+                ->withErrors('添加失败')
+                ->withInput();
+        }
+        
+        return Redirect::route('admin::courses')
+        ->withInput();
+    }
+
     /**
      * 返回admin编辑课程视图
      */
-    public function course_edit()
+    public function course_edit($course_id)
     {
-
-        return view('admin.course_edit');
+        $course_info = model('course')->get_course_info_by_id($course_id);
+        return view('admin.course_edit', [
+            'course_info' => $course_info,
+        ]);
     }
 
     /**
      * 返回admin课程学生视图
      */
-    public function course_students()
+    public function course_students($course_id)
     {
+        $user_list = model('account')->get_user_list_by_course_id($course_id);
+        return view('admin.students', [
+            'user_list' => $user_list,
+        ]);
+    }
 
-        return view('admin.students');
+    /**
+     * 返回admin课程学生视图
+     */
+    public function course_groups($course_id)
+    {
+        $group_list = model('group')->get_group_list_by_course_id($course_id);
+        $course_info = model('course')->get_course_info_by_id($course_id);
+        return view('admin.groups',[
+            'group_list' => $group_list,
+            'course_info' => $course_info,
+        ]);
     }
 
     /**

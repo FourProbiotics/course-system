@@ -24,19 +24,21 @@
             </tr>
             </thead>
             <tbody>
+            @foreach($course_list as $key => $val)
             <tr>
-                <th scope="row">22210</th>
-                <td>Databases, JavaScript, Ajax 和 PHP</td>
-                <td>徐利锋</td>
-                <td>2016/2017(1)</td>
-                <td>计算机学院</td>
+                <th scope="row">{{$val->course_id}}</th>
+                <td>{{$val->course_name}}</td>
+                <td>{{$val->teacher_name}}</td>
+                <td>{{$val->course_term}}</td>
+                <td>{{$val->course_college}}</td>
                 <td>
-                    <a href="{{ url('/admin/course/1/edit') }}" class="btn btn-default btn-xs">编辑</a>
-                    <a href="{{ url('/admin/course/1/groups/') }}" class="btn btn-default btn-xs">分组</a>
-                    <a href="{{ url('/admin/course/1/students/') }}" class="btn btn-default btn-xs">全部学生</a>
-                    <a href="{{ url('/admin/course/1/delete') }}" class="btn btn-default btn-xs">删除</a>
+                    <a href="{{ url('/admin/course/'.$val->course_id.'/edit') }}" class="btn btn-default btn-xs">编辑</a>
+                    <a href="{{ url('/admin/course/'.$val->course_id.'/groups/') }}" class="btn btn-default btn-xs">分组</a>
+                    <a href="{{ url('/admin/course/'.$val->course_id.'/students/') }}" class="btn btn-default btn-xs">全部学生</a>
+                    <a href="{{ url('/admin/course/'.$val->course_id.'/delete') }}" class="btn btn-default btn-xs">删除</a>
                 </td>
             </tr>
+            @endforeach
             </tbody>
         </table>
     </div>

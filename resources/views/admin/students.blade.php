@@ -25,17 +25,19 @@
             </tr>
             </thead>
             <tbody>
+            @foreach($user_list as $key => $val)
             <tr>
-                <th scope="row">1</th>
-                <td>201319630000</td>
-                <td>小明</td>
-                <td>test@qq.com</td>
-                <td>13000000000</td>
+                <th scope="row">{{$val->id}}</th>
+                <td>{{$val->uno}}</td>
+                <td>{{$val->name}}</td>
+                <td>{{$val->email}}</td>
+                <td>{{$val->mobile}}</td>
                 <td>
-                    <a href="{{ url('/admin/student/1/edit') }}" class="btn btn-default btn-xs">编辑</a>
-                    <a href="{{ url('/admin/student/1/delete') }}" class="btn btn-default btn-xs">删除</a>
+                    <a href="{{ url('/admin/student/'.$val->id.'/edit') }}" class="btn btn-default btn-xs">编辑</a>
+                    <a href="{{ url('/admin/student/'.$val->id.'/delete') }}" class="btn btn-default btn-xs">删除</a>
                 </td>
             </tr>
+            @endforeach
             </tbody>
         </table>
     </div>
