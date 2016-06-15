@@ -12,8 +12,10 @@ class Announce extends Model
         if (!$id) {
             return false;
         }
+        $announce = DB::table('announces')->where('id', intval($id))->first();
+        $announce->resource = model('resource')->get_resource('announce', intval($id));
 
-        return DB::table('announces')->where('id', intval($id))->first();
+        return $announce;
     }
 
     public function get_announce_info_by_ids($ids)
@@ -26,9 +28,9 @@ class Announce extends Model
 
         $result = null;
 
-        if ($announces_list = $user_info = DB::table('announces')->whereIn('id', $ids)->get()) {
+        if ($announces_list = $user_info = DB::table('announces')->whereIn('id', $ids)->orderBy('id', 'desc')->get()) {
             foreach ($announces_list AS $key => $val) {
-                $result[$val->id] = $val;
+                $val->resource = model('resource')->get_resource('announce', intval($val->id));
             }
         }
 
@@ -39,7 +41,7 @@ class Announce extends Model
     {
         $to_save_announce = array(
             'title' => htmlspecialchars($title),
-            'content' => htmlspecialchars($content),
+            'content' => ($content),
             'add_time' => date('Y-m-d H:i:s', time()),
             'update_time' => date('Y-m-d H:i:s', time()),
             'has_resource' => intval($has_resource),
@@ -90,7 +92,7 @@ class Announce extends Model
         // 以后再说
     }
 
-    public function get_announces_list($page = 0, $per_page = 10)
+    public function get_announces_list($page = 0, $per_page = 20)
     {
         $posts_index = DB::table('announces')->
         skip(intval($page) * intval($per_page))->

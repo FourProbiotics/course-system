@@ -143,6 +143,8 @@ Route::group(['as' => 'admin::'], function () {
         'as' => 'announces', 'middleware' => 'web', 'uses' => 'Admin\mainController@announces']);
     Route::get('admin/announce/new', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@announce_new']);
+    Route::post('admin/announce/new', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@announce_new_post']);
     Route::get('admin/announce/{id}/edit', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@announce_edit'])->where('id', '[0-9]+');
 
@@ -150,10 +152,14 @@ Route::group(['as' => 'admin::'], function () {
         'as' => 'students', 'middleware' => 'web', 'uses' => 'Admin\mainController@students']);
     Route::get('admin/student/new', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@student_new']);
+    Route::post('admin/student/new', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@student_new_post']);
     Route::get('admin/student/import', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@student_import']);
-    Route::get('admin/student/{id}/edit', [
-        'middleware' => 'web', 'uses' => 'Admin\mainController@student_edit'])->where('id', '[0-9]+');
+    Route::get('admin/student/{uid}/edit', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@student_edit'])->where('uid', '[0-9]+');
+    Route::post('admin/student/{uid}/edit', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@student_edit'])->where('uid', '[0-9]+');
 
     Route::get('admin/comments', [
         'as' => 'comments', 'middleware' => 'web', 'uses' => 'Admin\mainController@comments']);
@@ -166,4 +172,6 @@ Route::group(['as' => 'admin::'], function () {
         'middleware' => 'web', 'uses' => 'Admin\mainController@groups_new']);
     Route::get('admin/groups/{id}/edit', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@groups_edit'])->where('id', '[0-9]+');
+    Route::get('admin/groups/{id}/marking', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@groups_marking'])->where('id', '[0-9]+');
 });

@@ -23,26 +23,18 @@
             </tr>
             </thead>
             <tbody>
+            @foreach($announce_list as $key => $val)
             <tr>
-                <th scope="row">1</th>
-                <td><a href="{{ url('/announce/1') }}">这是公告的标题</a></td>
-                <td>公告</td>
-                <td>2016-04-04 10:20:30</td>
+                <th scope="row">{{$val->id}}</th>
+                <td><a href="{{ url('/announce/'.$val->id) }}">{{$val->title}}</a></td>
+                <td>{{$val->type}}</td>
+                <td>{{$val->update_time}}</td>
                 <td>
-                    <a href="{{ url('/admin/announce/1/edit') }}" class="btn btn-default btn-xs">编辑</a>
-                    <a href="{{ url('/admin/announce/1/delete') }}" class="btn btn-default btn-xs">删除</a>
+                    <a href="{{ url('/admin/announce/'.$val->id.'/edit') }}" class="btn btn-default btn-xs">编辑</a>
+                    <a href="{{ url('/admin/announce/'.$val->id.'/delete') }}" class="btn btn-default btn-xs">删除</a>
                 </td>
             </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td><a href="{{ url('/announce/2') }}">这是公告的标题</a></td>
-                <td>公告</td>
-                <td>2016-04-04 10:20:30</td>
-                <td>
-                    <a href="{{ url('/admin/announce/2/edit') }}" class="btn btn-default btn-xs">编辑</a>
-                    <a href="{{ url('/admin/announce/2/delete') }}" class="btn btn-default btn-xs">删除</a>
-                </td>
-            </tr>
+            @endforeach
             </tbody>
         </table>
     </div>

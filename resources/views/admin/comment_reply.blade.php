@@ -16,7 +16,7 @@
             <div class="form-group">
                 <label for="inputContent" class="col-sm-2 control-label">评论内容</label>
                 <div class="col-sm-8">
-                    <p class="form-control-static">这是评论内容</p>
+                    <p class="form-control-static">{{$comment->content}}</p>
                 </div>
             </div>
             <div class="form-group">

@@ -12,7 +12,7 @@
             <li><a href="{{ url('/admin/homework') }}">作业管理</a></li>
             <li class="active">新建</li>
         </ol>
-        <form class="form-horizontal" action="#" method="post">
+        <form class="form-horizontal" action="#" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="inputTitle" class="col-sm-2 control-label">标题</label>
                 <div class="col-sm-4">

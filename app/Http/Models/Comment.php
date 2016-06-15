@@ -119,4 +119,15 @@ class Comment extends Model
 
         return true;
     }
+
+    public function get_comment_list($page = 0, $per_page = 50)
+    {
+        $posts_index = DB::table('comments')->skip(intval($page) * intval($per_page))->take(intval($per_page))->orderBy('id', 'desc')->get();
+        foreach ($posts_index as $key => $val) {
+            $val->course_info = model('course')->get_course_info_by_id($val->course_id);
+            $val->user_info = model('account')->get_user_info_by_uid($val->uid);
+        }
+
+        return $posts_index;
+    }
 }

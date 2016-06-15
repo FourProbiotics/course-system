@@ -11,7 +11,13 @@
             <li><a href="{{ url('/admin/announces') }}">后台管理</a></li>
             <li class="active">公告管理</li>
         </ol>
-        <form class="form-horizontal" action="#" method="post">
+        <form class="form-horizontal" action="#" method="post" enctype="multipart/form-data">
+            @if ($errors->hasBag('default'))
+                <span class="help-block">
+                    <strong>{{ $errors->first() }}</strong>
+                </span>
+            @endif
+            {!! csrf_field() !!}
             <div class="form-group">
                 <label for="inputTitle" class="col-sm-2 control-label">标题</label>
                 <div class="col-sm-4">
@@ -21,16 +27,14 @@
             <div class="form-group">
                 <label for="inputClass" class="col-sm-2 control-label">类型</label>
                 <div class="col-sm-2">
-                    <input type="text" name="class" class="form-control" id="inputClass" placeholder="公告类型">
+                    <input type="text" name="type" class="form-control" id="inputClass" placeholder="公告类型">
                     <p class="help-block">如：系统，规则.</p>
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputContent" class="col-sm-2 control-label">内容</label>
                 <div class="col-sm-8">
-                    <textarea rows="5" name="content" class="form-control" id="inputContent"
-                              placeholder="公告内容"></textarea>
-                    <script>CKEDITOR.replace('inputContent');</script>
+                    <script id="content" name="content" type="text/plain"></script>
                 </div>
             </div>
             <div class="form-group">
@@ -38,7 +42,7 @@
                 <div class="col-sm-8">
                     <p class="form-control-static"><a href="#">test.zip</a></p>
                     <input type="file" name="file" id="inputFile">
-                    <p class="help-block">支持格式： .zip, .rar, .doc, .docx, .pdf.</p>
+                    <p class="help-block">支持格式： {{get_config('allowed_upload_types')}}</p>
                 </div>
             </div>
             <div class="form-group">
@@ -49,4 +53,8 @@
             </div>
         </form>
     </div>
+    <!-- 实例化编辑器 -->
+    <script type="text/javascript">
+        var ue = UE.getEditor('content');
+    </script>
 @endsection

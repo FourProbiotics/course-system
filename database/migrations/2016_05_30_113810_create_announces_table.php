@@ -15,7 +15,7 @@ class CreateAnnouncesTable extends Migration
         Schema::create('announces', function (Blueprint $table) {
             $table->increments('id')->comment = '公告id';
             $table->string('title')->comment = '公告标题';
-            $table->string('content')->comment = '公告内容';
+            $table->text('content')->comment = '公告内容';
             $table->timestamp('add_time')->comment = '添加时间';
             $table->timestamp('update_time')->comment = '更新时间';
             $table->string('type')->comment = '公告类型';

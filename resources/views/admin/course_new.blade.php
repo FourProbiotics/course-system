@@ -12,7 +12,7 @@
             <li><a href="{{ url('/admin/courses') }}">课程管理</a></li>
             <li class="active">新建课程</li>
         </ol>
-        <form class="form-horizontal" action="#" method="post">
+        <form class="form-horizontal" action="#" method="post" enctype="multipart/form-data">
             @if ($errors->hasBag('default'))
                 <span class="help-block">
                             <strong>{{ $errors->first() }}</strong>

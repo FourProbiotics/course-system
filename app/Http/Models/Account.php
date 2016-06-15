@@ -3,6 +3,7 @@
 namespace App\Http\Models;
 
 use DB;
+use App\User;
 use Auth;
 use Validator;
 use Illuminate\Database\Eloquent\Model;
@@ -355,6 +356,13 @@ class Account extends Model
         return $uids;
     }
 
+    public function get_all_users($page = 0, $per_page = 50)
+    {
+        $posts_index = DB::table('users')->skip(intval($page) * intval($per_page))->take(intval($per_page))->orderBy('id', 'desc')->get();
+
+        return $posts_index;
+    }
+
     public function get_user_list_by_course_id($course_id)
     {
         $group_list = model('group')->get_group_list_by_course_id($course_id);
@@ -371,6 +379,21 @@ class Account extends Model
         sort($uids);
 
         return $this->get_user_info_by_uids($uids);
+    }
+
+    public function add_user($uno, $password, $name = '', $group_id = 0, $email = '', $college = '', $class = '', $mobile = '')
+    {
+        return User::create([
+            'uno' => $uno,
+            'password' => bcrypt($password),
+            'name' => $name,
+            'group_id' => intval($group_id),
+            'college' => $college,
+            'class' => $class,
+            'email' => $email,
+            'mobile' => $mobile,
+            'last_login' => date('Y-m-d H:i:s', time()),
+        ]);
     }
 
 

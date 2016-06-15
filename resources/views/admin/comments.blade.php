@@ -28,7 +28,7 @@
                     <th scope="row">{{$val->id}}</th>
                     <td><a href="{{ url('/admin/student/'.$val->id.'/edit') }}">{{$val->user_info->name}}</a></td>
                     <td>{{$val->content}}</td>
-                    <td><a href="{{ url('/course/'.$val->id) }}">Course {{$val->course_id}}</a></td>
+                    <td><a href="{{ url('/course/'.$val->id) }}">{{$val->course_info->course_name}}</a></td>
                     <td>{{$val->update_time}}</td>
                     <td>
                         <a href="{{ url('/admin/comment/'.$val->id.'/reply') }}" class="btn btn-default btn-xs">回复</a>

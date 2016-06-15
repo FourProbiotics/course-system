@@ -36,6 +36,7 @@ class mainController extends Controller
     public function announce($id)
     {
         $announce = model('announce')->get_announce_info_by_id($id);
+
         return view('announces.detail', [
             'announce' => $announce,
         ]);

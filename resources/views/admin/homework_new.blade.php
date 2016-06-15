@@ -12,7 +12,7 @@
             <li><a href="{{ url('/admin/homework') }}">作业管理</a></li>
             <li class="active">新建</li>
         </ol>
-        <form class="form-horizontal" action="#" method="post">
+        <form class="form-horizontal" action="#" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="inputTitle" class="col-sm-2 control-label">标题</label>
                 <div class="col-sm-4">
@@ -54,7 +54,7 @@
                 <label for="inputFile" class="col-sm-2 control-label">附件</label>
                 <div class="col-sm-8">
                     <input type="file" name="file" id="inputFile">
-                    <p class="help-block">支持格式： .zip, .rar, .doc, .docx, .pdf.</p>
+                    <p class="help-block">支持格式： {{get_config('allowed_upload_types')}}</p>
                 </div>
             </div>
             <div class="form-group">

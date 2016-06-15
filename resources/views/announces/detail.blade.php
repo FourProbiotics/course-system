@@ -8,13 +8,18 @@
     <div id="main-width">
         <ol class="breadcrumb">
             <li><a href="{{ url('/') }}">首页</a></li>
-            <li><a href="#">公告</a></li>
+            <li><a href="{{ url('/announces/') }}">公告</a></li>
             <li class="active">{{$announce->title}}</li>
         </ol>
         <h2 style="margin: 1.5em 0 0.5em 0;text-align: center;">{{$announce->title}}</h2><!-- 标题 -->
         <div style="text-align: center; font-size: 0.9em; color: #858585;">{{$announce->update_time}}</div><!-- 时间 -->
         <div style="border-top: 1px solid #DDD;margin-top: 1em;padding: 1em;"><!-- 内容部分，此处只有管理员可用，我认为不用防止XSS -->
-            {{$announce->content}}
+            <?php echo $announce->content; ?>
         </div>
+        @foreach($announce->resource as $key => $val)
+            <div style="border-top: 1px solid #DDD;margin-top: 1em;padding: 1em;">
+                <a href="{{ url('/download/'.$val->id) }}">{{$val->file_name}}</a>
+            </div>
+        @endforeach
     </div>
 @endsection

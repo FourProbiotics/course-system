@@ -14,6 +14,9 @@ class mainController extends Controller
 {
     public function index($id)
     {
+        if (Auth::guest()) {
+            return response('Unauthorized.', 401);
+        }
         $resource = model('resource')->get_resource_by_id($id);
         return response()->download(public_path() . '/uploads/' . $resource->item_type . '/' . gmdate('Ymd', time($resource->add_time)) . '/' . $resource->file_location, $resource->file_name);
     }

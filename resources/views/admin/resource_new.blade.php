@@ -48,7 +48,7 @@
                 <label for="inputFile" class="col-sm-2 control-label">附件</label>
                 <div class="col-sm-8">
                     <input type="file" name="file" id="inputFile">
-                    <p class="help-block">支持格式： .zip, .rar, .doc, .docx, .pdf.</p>
+                    <p class="help-block">支持格式： {{get_config('allowed_upload_types')}}</p>
                 </div>
             </div>
             <div class="form-group">

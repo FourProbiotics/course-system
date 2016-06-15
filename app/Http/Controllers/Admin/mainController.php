@@ -7,6 +7,7 @@
  */
 namespace App\Http\Controllers\Admin;
 
+use core_upload;
 use DB;
 use Auth;
 use Config;
@@ -317,8 +318,10 @@ class mainController extends Controller
      */
     public function announces()
     {
-
-        return view('admin.announces');
+        $announce_list = model('announce')->get_announces_list(0, 200);
+        return view('admin.announces', [
+            'announce_list' => $announce_list,
+        ]);
     }
 
     /**
@@ -328,6 +331,56 @@ class mainController extends Controller
     {
 
         return view('admin.announce_new');
+    }
+
+    public function announce_new_post(Request $request)
+    {
+        $title = $request->get('title');
+        $type = $request->get('type');
+        $content = $request->get('content');
+        $has_resource = 0;
+        if (!$title || !$type || !$content) {
+            return Redirect::back()
+                ->withErrors('标题、类型、内容必须填写')
+                ->withInput();
+        }
+
+        $upload_data = null;
+
+        $upload = new core_upload();
+
+        $upload->initialize(array(
+            'allowed_types' => get_config('allowed_upload_types'),
+            'upload_path' => base_path('public/uploads') . '/announce/' . gmdate('Ymd'),
+            'is_image' => TRUE,
+            'max_size' => 1024 * 10,
+        ));
+        $upload->do_upload('file');
+
+        if ($upload->get_error()) {
+            return Redirect::back()
+                ->withErrors($upload->get_error())
+                ->withInput();
+        }
+
+        if (!$upload_data = $upload->data()) {
+            return Redirect::back()
+                ->withErrors('上传失败，请与管理员联系')
+                ->withInput();
+        } else {
+            $has_resource = 1;
+        }
+
+        if (!$id = model('announce')->save_announce($title, $content, $has_resource, $type)) {
+            return Redirect::back()
+                ->withErrors('添加失败')
+                ->withInput();
+        }
+        if ($has_resource) {
+            model('resource')->add_resource('announce', $title, $upload_data['orig_name'], basename($upload_data['full_path']), $id, $upload_data['is_image']);
+        }
+
+        return Redirect::route('admin::announces');
     }
 
     /**
@@ -438,15 +491,7 @@ class mainController extends Controller
      */
     public function comments()
     {
-        $courses = DB::table('courses')->count();
-        $comments = array();
-        for($i = 1;$i <= $courses;$i++){
-            $temp = model('comment')->get_comment_list_by_course_id($i);
-            foreach($temp as $k=>$v)
-            {
-                array_push($comments, $v);
-            }
-        }
+        $comments = model('comment')->get_comment_list(0, 200);
 
         return view('admin.comments', ['comments' => $comments]);
     }
@@ -454,10 +499,12 @@ class mainController extends Controller
     /**
      * 返回admin评论视图
      */
-    public function comment_reply()
+    public function comment_reply($id)
     {
-
-        return view('admin.comment_reply');
+        $comment = model('comment')->get_comment_info_by_id($id);
+        return view('admin.comment_reply', [
+            'comment' => $comment,
+        ]);
     }
 
     /**

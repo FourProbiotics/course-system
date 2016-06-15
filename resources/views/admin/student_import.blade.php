@@ -18,7 +18,7 @@
                 <label for="inputFile" class="col-sm-2 control-label">CSV</label>
                 <div class="col-sm-8">
                     <input type="file" name="file" id="inputFile">
-                    <p class="help-block">格式： 学号 姓名 身份证 学院 专业 邮箱 手机</p>
+                    <p class="help-block">格式： 学号 姓名 学院 专业 邮箱 手机</p>
                 </div>
             </div>
             <hr>
@@ -30,13 +30,20 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputCourse" class="col-sm-2 control-label">课程</label>
+                <label for="inputCourse" class="col-sm-2 control-label">分组</label>
                 <div class="col-sm-4">
                     <div style="width: 200%;max-height: 8em;overflow: auto;font-size: 0.9em;">
-                        <label><input type="checkbox" name="inputCourses[]">Databases, JavaScript, Ajax 和 PHP
-                            2016/2017（1）</label><br>
-                        <label><input type="checkbox" name="inputCourses[]">Databases, JavaScript, Ajax 和 PHP
-                            2015/2016（1）</label><br>
+                        <select name="group_id" class="form-control">
+                            <option value="0">无</option>
+                            @foreach($group_list as $key => $val)
+                                <option value="{{$val->group_id}}">{{$val->group_id}}
+                                    组:{{$val->course_info->course_name}}|{{$val->course_info->course_term}} :
+                                    @foreach($val->member as $k => $v)
+                                        {{$v->name.' '}}
+                                    @endforeach
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                     <p class="help-block">选填，自动将学生加入课程名单，自动去重</p>
                 </div>
