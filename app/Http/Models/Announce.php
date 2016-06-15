@@ -66,7 +66,7 @@ class Announce extends Model
         $data['title'] = htmlspecialchars($title);
 
         if ($content) {
-            $data['content'] = htmlspecialchars($content);
+            $data['content'] = ($content);
         }
         if ($has_resource) {
             $data['has_resource'] = intval($has_resource);

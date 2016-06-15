@@ -10,7 +10,7 @@
             <li><a href="{{ url('/') }}">首页</a></li>
             <li><a href="#">后台管理</a></li>
             <li><a href="#">作业管理</a></li>
-            <li class="active">t2.实现简单微博</li>
+            <li class="active">{{$homework->homework_title}}</li>
         </ol>
         <table class="table">
             <thead style="border-top: 1px solid #DDD;background-color: #f9f9f9;">

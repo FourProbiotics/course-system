@@ -12,6 +12,9 @@ class Resource extends Model
         if ($is_image) {
             $is_image = 1;
         }
+        if ($exist = $this->get_resource($item_type, $item_id)) {
+            $this->remove_resource($exist[0]->id);
+        }
 
         return DB::table('resource')->insertGetId(array(
             'file_name' => htmlspecialchars($file_name),

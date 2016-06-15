@@ -13,24 +13,30 @@
             <li class="active">导入</li>
         </ol>
         <p class="bg-warning" style="padding: 1em;">注：系统会自动去除重复学生。</p>
-        <form class="form-horizontal" action="#" method="post">
+        <form class="form-horizontal" action="#" method="post" enctype="multipart/form-data">
+            @if ($errors->hasBag('default'))
+                <span class="help-block">
+                            <strong>{{ $errors->first() }}</strong>
+                        </span>
+            @endif
+            {!! csrf_field() !!}
             <div class="form-group">
                 <label for="inputFile" class="col-sm-2 control-label">CSV</label>
                 <div class="col-sm-8">
-                    <input type="file" name="file" id="inputFile">
-                    <p class="help-block">格式： 学号 姓名 学院 专业 邮箱 手机</p>
+                    <input type="file" name="file" id="inputFile" accept=".csv">
+                    <p class="help-block">格式： 学号 姓名 邮箱 学院 班级 手机</p>
                 </div>
             </div>
             <hr>
             <div class="form-group">
                 <label for="inputIns" class="col-sm-2 control-label">初始密码</label>
                 <div class="col-sm-4">
-                    <input type="text" name="passwrod" class="form-control" id="inputIns" placeholder="选填">
+                    <input type="text" name="password" class="form-control" id="inputIns" placeholder="选填">
                     <p class="help-block">默认为学号后6位</p>
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputCourse" class="col-sm-2 control-label">分组</label>
+                <label for="inputCourse" class="col-sm-2 control-label">默认分组</label>
                 <div class="col-sm-4">
                     <div style="width: 200%;max-height: 8em;overflow: auto;font-size: 0.9em;">
                         <select name="group_id" class="form-control">

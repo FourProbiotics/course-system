@@ -93,6 +93,7 @@ class Group extends Model
 
         foreach ($groups as $key => $val) {
             $val->member = DB::table('users')->where('group_id', intval($val->group_id))->get();
+            $val->member = $val->member ? $val->member : array();
             $val->course_info = model('course')->get_course_info_by_id($val->course_id);
             $val->member_count = count($val->member);
         }
@@ -116,15 +117,25 @@ class Group extends Model
         return $group_id;
     }
 
-    public function edit_group($group_id, $member_uids)
+    public function edit_group($group_id, $member_uids, $course_id)
     {
-        $old_member = DB::table('users')->where('group_id', intval($group_id))->get();
-
-        DB::table('users')->whereIn('uid', $old_member)->update([
-            'group_id' => 0
+        DB::table('groups')->where('group_id', intval($group_id))->update([
+            'course_id' => $course_id,
         ]);
 
-        DB::table('users')->whereIn('uid', $member_uids)->update([
+        $old_member = DB::table('users')->where('group_id', intval($group_id))->get();
+        $old_member_uids = array();
+        foreach ($old_member as $key => $val) {
+            $old_member_uids[] = $val->id;
+        }
+
+        if ($old_member_uids) {
+            DB::table('users')->whereIn('id', $old_member_uids)->update([
+                'group_id' => 0,
+            ]);
+        }
+
+        DB::table('users')->whereIn('id', $member_uids)->update([
             'group_id' => $group_id
         ]);
 
@@ -134,10 +145,10 @@ class Group extends Model
     public function marking_group($group_id, $marking)
     {
         DB::table('groups')->where('group_id', intval($group_id))->update([
-            'score' => intval($marking),
+            'score' => $marking,
         ]);
 
-        return true;
+        return $group_id;
     }
 
     public function delete_group($group_id)

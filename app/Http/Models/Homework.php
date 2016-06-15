@@ -18,8 +18,10 @@ class Homework extends Model
         if (!$homework_id) {
             return false;
         }
-
-        return DB::table('homework')->where('homework_id', intval($homework_id))->first();
+        $homework = DB::table('homework')->where('homework_id', intval($homework_id))->first();
+        $homework->resource = model('resource')->get_resource('homework', intval($homework->homework_id));
+        $homework->course_info = model('course')->get_course_info_by_id($homework->course_id);
+        return $homework;
     }
 
     /**
@@ -85,7 +87,7 @@ class Homework extends Model
         $data['homework_title'] = htmlspecialchars($homework_title);
 
         if ($homework_content) {
-            $data['homework_content'] = htmlspecialchars($homework_content);
+            $data['homework_content'] = ($homework_content);
         }
         if ($course_id) {
             $data['course_id'] = intval($course_id);
@@ -94,7 +96,7 @@ class Homework extends Model
             $data['deadline'] = date('Y-m-d H:i:s', $deadline);
         }
         if ($homework_code) {
-            $data['teach_plan'] = htmlspecialchars($homework_code);
+            $data['homework_code'] = htmlspecialchars($homework_code);
         }
 
         DB::table('homework')->where('homework_id', intval($homework_id))->update($data);
@@ -109,7 +111,7 @@ class Homework extends Model
      *
      * @return boolean true|false
      */
-    public function remove_course($homework_id)
+    public function remove_homework($homework_id)
     {
         if (!$homework_info = $this->get_homework_info_by_id($homework_id)) {
             return false;

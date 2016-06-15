@@ -9,7 +9,12 @@ class Answer extends Model
 {
     public function get_answer_by_id($answer_id)
     {
-        return DB::table('homework_answers')->where('answer_id', intval($answer_id))->first();
+        $answer = DB::table('homework_answers')->where('answer_id', intval($answer_id))->first();
+        $answer->homework_info = model('homework')->get_homework_info_by_id($answer->homework_id);
+        $answer->user_info = model('account')->get_user_info_by_uid($answer->uid);
+        $answer->resource = model('resource')->get_resource('answer', intval($answer->answer_id));
+
+        return $answer;
     }
 
     public function get_answers_by_ids($answer_ids)
@@ -184,5 +189,17 @@ class Answer extends Model
         $posts_index = $db->first();
 
         return $posts_index;
+    }
+
+    public function answer_marking($answer_id, $score)
+    {
+        $data = [
+            'score' => $score,
+            'read_flag' => 1,
+        ];
+
+        DB::table('homework_answers')->where('answer_id', $answer_id)->update($data);
+
+        return true;
     }
 }

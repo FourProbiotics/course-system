@@ -22,10 +22,11 @@ class Course extends Model
         }
 
         $course = DB::table('courses')->where('course_id', intval($course_id))->first();
+        if ($course) {
+            $course->resource = model('resource')->get_resource('course', $course_id);
+        }
 
-        $course->resource = model('resource')->get_resource('course', $course_id);
-
-        return DB::table('courses')->where('course_id', intval($course_id))->first();
+        return $course;
     }
 
     /**
@@ -146,6 +147,10 @@ class Course extends Model
         }
 
         DB::table('courses')->where('course_id', intval($course_id))->delete();
+        $group_list = model('group')->get_group_list_by_course_id($course_id);
+        foreach ($group_list as $key => $val) {
+            model('group')->delete_group($val->group_id);
+        }
 
         // 删除评论
         DB::table('comments')->where('course_id', intval($course_id))->delete();

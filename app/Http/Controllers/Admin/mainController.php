@@ -170,12 +170,38 @@ class mainController extends Controller
                 ->withErrors('名称、教师、学院、学期必须填写')
                 ->withInput();
         }
-        
-        if(!model('course')->save_course($name, $content, $term, $teach_outline, $teach_plan, $college, $teacher))
+
+        $upload = new core_upload();
+
+        $upload->initialize(array(
+            'allowed_types' => get_config('allowed_upload_types'),
+            'upload_path' => base_path('public/uploads') . '/course/' . gmdate('Ymd'),
+            'is_image' => TRUE,
+            'max_size' => 1024 * 10,
+        ));
+        $upload->do_upload('file');
+
+        if ($upload->get_error()) {
+            return Redirect::back()
+                ->withErrors($upload->get_error())
+                ->withInput();
+        }
+
+        if (!$upload_data = $upload->data()) {
+            return Redirect::back()
+                ->withErrors('上传失败，请与管理员联系')
+                ->withInput();
+        }
+
+        if (!$course_id = model('course')->save_course($name, $content, $term, $teach_outline, $teach_plan, $college, $teacher))
         {
             return Redirect::back()
                 ->withErrors('添加失败')
                 ->withInput();
+        }
+
+        if ($upload_data) {
+            model('resource')->add_resource('course', $name, $upload_data['orig_name'], basename($upload_data['full_path']), $course_id, $upload_data['is_image']);
         }
         
         return Redirect::route('admin::courses');
@@ -208,8 +234,34 @@ class mainController extends Controller
                 ->withErrors('名称、教师、学院、学期必须填写')
                 ->withInput();
         }
-        
+
+        $upload = new core_upload();
+
+        $upload->initialize(array(
+            'allowed_types' => get_config('allowed_upload_types'),
+            'upload_path' => base_path('public/uploads') . '/course/' . gmdate('Ymd'),
+            'is_image' => TRUE,
+            'max_size' => 1024 * 10,
+        ));
+        $upload->do_upload('file');
+
+        if ($upload->get_error()) {
+            return Redirect::back()
+                ->withErrors($upload->get_error())
+                ->withInput();
+        }
+
+        if (!$upload_data = $upload->data()) {
+            return Redirect::back()
+                ->withErrors('上传失败，请与管理员联系')
+                ->withInput();
+        }
+
         $course_info = model('course')->update_course($course_id, $name, $content, $term, $teach_outline, $teach_plan, $college, $teacher);
+
+        if ($upload_data) {
+            model('resource')->add_resource('course', $name, $upload_data['orig_name'], basename($upload_data['full_path']), $course_id, $upload_data['is_image']);
+        }
 
         return Redirect::route('admin::courses');
     }
@@ -286,26 +338,29 @@ class mainController extends Controller
                 ->withErrors('标题、课程、截止日期必须填写')
                 ->withInput();
         }
-        $upload = new core_upload();
+        $upload_data = null;
+        if ($request->file('file')) {
+            $upload = new core_upload();
 
-        $upload->initialize(array(
-            'allowed_types' => get_config('allowed_upload_types'),
-            'upload_path' => base_path('public/uploads') . '/homework/' . gmdate('Ymd'),
-            'is_image' => TRUE,
-            'max_size' => 1024 * 10,
-        ));
-        $upload->do_upload('file');
+            $upload->initialize(array(
+                'allowed_types' => get_config('allowed_upload_types'),
+                'upload_path' => base_path('public/uploads') . '/homework/' . gmdate('Ymd'),
+                'is_image' => TRUE,
+                'max_size' => 1024 * 10,
+            ));
+            $upload->do_upload('file');
 
-        if ($upload->get_error()) {
-            return Redirect::back()
-                ->withErrors($upload->get_error())
-                ->withInput();
-        }
+            if ($upload->get_error()) {
+                return Redirect::back()
+                    ->withErrors($upload->get_error())
+                    ->withInput();
+            }
 
-        if (!$upload_data = $upload->data()) {
-            return Redirect::back()
-                ->withErrors('上传失败，请与管理员联系')
-                ->withInput();
+            if (!$upload_data = $upload->data()) {
+                return Redirect::back()
+                    ->withErrors('上传失败，请与管理员联系')
+                    ->withInput();
+            }
         }
 
         $homework_id = model('homework')->save_homework($title, $content, $course_id, $deadline, $code);
@@ -320,10 +375,71 @@ class mainController extends Controller
     /**
      * 返回admin作业编辑视图
      */
-    public function homework_edit()
+    public function homework_edit($homework_id)
     {
+        $homework = model('homework')->get_homework_info_by_id($homework_id);
+        $course_list = model('course')->get_courses_list(0, 200);
+        $homework->deadline = gmdate('Y-m-d', time($homework->deadline));
 
-        return view('admin.homework_edit');
+        return view('admin.homework_edit', [
+            'homework' => $homework,
+            'course_list' => $course_list,
+        ]);
+    }
+
+    public function homework_edit_post($homework_id, Request $request)
+    {
+        $title = $request->get('title');
+        $course_id = $request->get('course_id');
+        $deadline = $request->get('deadline');
+        $deadline = time($deadline . '23:59:59');
+        $content = $request->get('content');
+        $code = $request->get('code');
+
+        if (!$title || !$course_id || !$deadline) {
+            return Redirect::back()
+                ->withErrors('标题、课程、截止日期必须填写')
+                ->withInput();
+        }
+        $upload_data = null;
+        if ($request->file('file')) {
+            $upload = new core_upload();
+
+            $upload->initialize(array(
+                'allowed_types' => get_config('allowed_upload_types'),
+                'upload_path' => base_path('public/uploads') . '/homework/' . gmdate('Ymd'),
+                'is_image' => TRUE,
+                'max_size' => 1024 * 10,
+            ));
+            $upload->do_upload('file');
+
+            if ($upload->get_error()) {
+                return Redirect::back()
+                    ->withErrors($upload->get_error())
+                    ->withInput();
+            }
+
+            if (!$upload_data = $upload->data()) {
+                return Redirect::back()
+                    ->withErrors('上传失败，请与管理员联系')
+                    ->withInput();
+            }
+        }
+
+
+        model('homework')->update_homework($homework_id, $title, $content, $course_id, $deadline, $code);
+
+        if ($upload_data) {
+            model('resource')->add_resource('homework', $title, $upload_data['orig_name'], basename($upload_data['full_path']), $homework_id, $upload_data['is_image']);
+        }
+
+        return Redirect::route('admin::homework');
+    }
+
+    public function homework_delete($homework_id)
+    {
+        model('homework')->remove_homework($homework_id);
+        return Redirect::back();
     }
 
     /**
@@ -331,8 +447,10 @@ class mainController extends Controller
      */
     public function homework_answer($homework_id)
     {
+        $homework = model('homework')->get_homework_info_by_id($homework_id);
         $answer_list = model('answer')->get_answer_list_by_homework_id($homework_id);
         return view('admin.homework_answer', [
+            'homework' => $homework,
             'answer_list' => $answer_list,
         ]);
     }
@@ -340,10 +458,23 @@ class mainController extends Controller
     /**
      * 返回admin作业评分视图
      */
-    public function homework_marking()
+    public function homework_marking($answer_id)
     {
+        $answer = model('answer')->get_answer_by_id($answer_id);
+        return view('admin.homework_marking', [
+            'answer' => $answer,
+        ]);
+    }
 
-        return view('admin.homework_marking');
+    public function homework_marking_post($homework_id, $answer_id, Request $request)
+    {
+        $marking = $request->get('marking');
+
+        model('answer')->answer_marking($answer_id, $marking);
+
+        return Redirect::route('admin::homework_answer', [
+            'homework_id' => $homework_id
+        ]);
     }
 
     /**
@@ -414,29 +545,30 @@ class mainController extends Controller
         }
 
         $upload_data = null;
+        if ($request->file('file')) {
+            $upload = new core_upload();
 
-        $upload = new core_upload();
+            $upload->initialize(array(
+                'allowed_types' => get_config('allowed_upload_types'),
+                'upload_path' => base_path('public/uploads') . '/announce/' . gmdate('Ymd'),
+                'is_image' => TRUE,
+                'max_size' => 1024 * 10,
+            ));
+            $upload->do_upload('file');
 
-        $upload->initialize(array(
-            'allowed_types' => get_config('allowed_upload_types'),
-            'upload_path' => base_path('public/uploads') . '/announce/' . gmdate('Ymd'),
-            'is_image' => TRUE,
-            'max_size' => 1024 * 10,
-        ));
-        $upload->do_upload('file');
+            if ($upload->get_error()) {
+                return Redirect::back()
+                    ->withErrors($upload->get_error())
+                    ->withInput();
+            }
 
-        if ($upload->get_error()) {
-            return Redirect::back()
-                ->withErrors($upload->get_error())
-                ->withInput();
-        }
-
-        if (!$upload_data = $upload->data()) {
-            return Redirect::back()
-                ->withErrors('上传失败，请与管理员联系')
-                ->withInput();
-        } else {
-            $has_resource = 1;
+            if (!$upload_data = $upload->data()) {
+                return Redirect::back()
+                    ->withErrors('上传失败，请与管理员联系')
+                    ->withInput();
+            } else {
+                $has_resource = 1;
+            }
         }
 
         if (!$id = model('announce')->save_announce($title, $content, $has_resource, $type)) {
@@ -461,6 +593,54 @@ class mainController extends Controller
         return view('admin.announce_edit', [
             'announce' => $announce,
         ]);
+    }
+
+    public function announce_edit_post($id, Request $request)
+    {
+        $title = $request->get('title');
+        $type = $request->get('type');
+        $content = $request->get('content');
+        $has_resource = 0;
+        if (!$title || !$type || !$content) {
+            return Redirect::back()
+                ->withErrors('标题、类型、内容必须填写')
+                ->withInput();
+        }
+
+        $upload_data = null;
+        if ($request->file('file')) {
+            $upload = new core_upload();
+
+            $upload->initialize(array(
+                'allowed_types' => get_config('allowed_upload_types'),
+                'upload_path' => base_path('public/uploads') . '/announce/' . gmdate('Ymd'),
+                'is_image' => TRUE,
+                'max_size' => 1024 * 10,
+            ));
+            $upload->do_upload('file');
+
+            if ($upload->get_error()) {
+                return Redirect::back()
+                    ->withErrors($upload->get_error())
+                    ->withInput();
+            }
+
+            if (!$upload_data = $upload->data()) {
+                return Redirect::back()
+                    ->withErrors('上传失败，请与管理员联系')
+                    ->withInput();
+            } else {
+                $has_resource = 1;
+            }
+        }
+
+        model('announce')->update_announce($id, $title, $content, $has_resource, $type);
+
+        if ($has_resource) {
+            model('resource')->add_resource('announce', $title, $upload_data['orig_name'], basename($upload_data['full_path']), $id, $upload_data['is_image']);
+        }
+
+        return Redirect::route('admin::announces');
     }
 
     public function announce_delete($id)
@@ -519,9 +699,53 @@ class mainController extends Controller
      */
     public function student_import()
     {
-
         $group_list = model('group')->get_group_list();
         return view('admin.student_import', [
+            'group_list' => $group_list
+        ]);
+    }
+
+    public function student_import_post(Request $request)
+    {
+        $password = $request->get('password');
+        $group_id = $request->get('group_id');
+        $upload = new core_upload();
+
+        $upload->initialize(array(
+            'allowed_types' => 'csv',
+            'upload_path' => base_path('public/uploads') . '/csv/' . gmdate('Ymd'),
+            'is_image' => TRUE,
+            'max_size' => 1024 * 10,
+        ));
+        $upload->do_upload('file');
+
+        if ($upload->get_error()) {
+            return Redirect::back()
+                ->withErrors($upload->get_error())
+                ->withInput();
+        }
+
+        if (!$upload_data = $upload->data()) {
+            return Redirect::back()
+                ->withErrors('上传失败，请与管理员联系')
+                ->withInput();
+        }
+
+        $file = fopen($upload_data['full_path'], "r");
+        $users = array();
+        while (!feof($file)) {
+            $users[] = explode("\t", fgetcsv($file)[0]);
+        }
+
+        foreach ($users as $key => $val) {
+            if (!$val || !$val[0]) {
+                break;
+            }
+            model('account')->add_user($val[0], $password ? $password : substr($val[0], -6), $val[1], $group_id, $val[2], $val[3], $val[4], $val[5]);
+        }
+
+        $group_list = model('group')->get_group_list();
+        return view('admin.students', [
             'group_list' => $group_list
         ]);
     }
@@ -607,6 +831,27 @@ class mainController extends Controller
             'group' => $group,
             'course_list' => $course_list,
         ]);
+    }
+
+    public function groups_edit_post($group_id, Request $request)
+    {
+        $course_id = $request->get('course_id');
+        $member = $request->get('member');
+
+        $member_unos = explode(',', $member);
+        if (!$member_unos[count($member_unos) - 1]) {
+            array_pop($member_unos);
+        }
+
+        if ($error = model('account')->exist_error_unos($member_unos)) {
+            return Redirect::back()
+                ->withErrors('下列用户不存在: ' . implode(" ", $error))
+                ->withInput();
+        }
+        $user_uids = model('account')->get_uids_by_unos($member_unos);
+        model('group')->edit_group($group_id, $user_uids, $course_id);
+
+        return Redirect::route('admin::groups');
     }
 
     public function groups_new()

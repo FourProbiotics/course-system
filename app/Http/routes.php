@@ -133,10 +133,18 @@ Route::group(['as' => 'admin::'], function () {
         'middleware' => 'web', 'uses' => 'Admin\mainController@homework_new_post']);
     Route::get('admin/homework/{homework_id}/edit', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@homework_edit'])->where('homework_id', '[0-9]+');
+    Route::post('admin/homework/{homework_id}/edit', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@homework_edit_post'])->where('homework_id', '[0-9]+');
+    Route::get('admin/homework/{homework_id}/delete', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@homework_delete'])->where('homework_id', '[0-9]+');
     Route::get('admin/homework/{homework_id}/answer', [
-        'middleware' => 'web', 'uses' => 'Admin\mainController@homework_answer'])->where('homework_id', '[0-9]+');
+        'as' => 'homework_answer', 'middleware' => 'web', 'uses' => 'Admin\mainController@homework_answer'])->where('homework_id', '[0-9]+');
     Route::get('admin/homework/{homework_id}/answer/{answer_id}/marking', [
-        'middleware' => 'web', 'uses' => 'Admin\mainController@homework_marking'])->where('homework_id', '[0-9]+')->where('answer_id', '[0-9]+');
+        'middleware' => 'web', 'uses' => 'Admin\mainController@homework_marking'])
+        ->where('homework_id', '[0-9]+')->where('answer_id', '[0-9]+');
+    Route::post('admin/homework/{homework_id}/answer/{answer_id}/marking', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@homework_marking_post'])
+        ->where('homework_id', '[0-9]+')->where('answer_id', '[0-9]+');
 
     Route::get('admin/resources', [
         'as' => 'resources', 'middleware' => 'web', 'uses' => 'Admin\mainController@resources']);
@@ -155,6 +163,8 @@ Route::group(['as' => 'admin::'], function () {
         'middleware' => 'web', 'uses' => 'Admin\mainController@announce_new_post']);
     Route::get('admin/announce/{id}/edit', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@announce_edit'])->where('id', '[0-9]+');
+    Route::post('admin/announce/{id}/edit', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@announce_edit_post'])->where('id', '[0-9]+');
     Route::get('admin/announce/{id}/delete', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@announce_delete'])->where('id', '[0-9]+');
 
@@ -166,10 +176,12 @@ Route::group(['as' => 'admin::'], function () {
         'middleware' => 'web', 'uses' => 'Admin\mainController@student_new_post']);
     Route::get('admin/student/import', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@student_import']);
+    Route::post('admin/student/import', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@student_import_post']);
     Route::get('admin/student/{uid}/edit', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@student_edit'])->where('uid', '[0-9]+');
     Route::post('admin/student/{uid}/edit', [
-        'middleware' => 'web', 'uses' => 'Admin\mainController@student_edit'])->where('uid', '[0-9]+');
+        'middleware' => 'web', 'uses' => 'Admin\mainController@student_edit_post'])->where('uid', '[0-9]+');
 
     Route::get('admin/comments', [
         'as' => 'comments', 'middleware' => 'web', 'uses' => 'Admin\mainController@comments']);
@@ -184,6 +196,8 @@ Route::group(['as' => 'admin::'], function () {
         'middleware' => 'web', 'uses' => 'Admin\mainController@groups_new_post']);
     Route::get('admin/groups/{group_id}/edit', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@groups_edit'])->where('group_id', '[0-9]+');
+    Route::post('admin/groups/{group_id}/edit', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@groups_edit_post'])->where('group_id', '[0-9]+');
     Route::get('admin/groups/{group_id}/delete', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@groups_delete'])->where('group_id', '[0-9]+');
     Route::get('admin/groups/{group_id}/marking', [
