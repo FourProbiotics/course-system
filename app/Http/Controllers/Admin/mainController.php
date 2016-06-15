@@ -207,6 +207,10 @@ class mainController extends Controller
     public function course_students($course_id)
     {
         $user_list = model('account')->get_user_list_by_course_id($course_id);
+
+        if (!$user_list) {
+            $user_list = array();
+        }
         return view('admin.students', [
             'user_list' => $user_list,
         ]);
@@ -340,8 +344,10 @@ class mainController extends Controller
      */
     public function students()
     {
-
-        return view('admin.students');
+        $user_list = model('account')->get_all_users(0, 200);
+        return view('admin.students', [
+            'user_list' => $user_list,
+        ]);
     }
 
     /**
@@ -349,8 +355,32 @@ class mainController extends Controller
      */
     public function student_new()
     {
+        $group_list = model('group')->get_group_list();
+        return view('admin.student_new', [
+            'group_list' => $group_list
+        ]);
+    }
 
-        return view('admin.student_new');
+    public function student_new_post(Request $request)
+    {
+        $name = $request->get('name');
+        $uno = $request->get('uno');
+        $password = $request->get('password');
+        $class = $request->get('class');
+        $email = $request->get('email');
+        $mobile = $request->get('mobile');
+        $college = $request->get('college');
+        $group_id = $request->get('group_id');
+
+        if (!$uno || !$password) {
+            return Redirect::back()
+                ->withErrors('学号、密码必须填写')
+                ->withInput();
+        }
+
+        model('account')->add_user($uno, $password, $name, $group_id, $email, $college, $class, $mobile);
+
+        return Redirect::route('admin::students');
     }
 
     /**
@@ -359,16 +389,48 @@ class mainController extends Controller
     public function student_import()
     {
 
-        return view('admin.student_import');
+        $group_list = model('group')->get_group_list();
+        return view('admin.student_import', [
+            'group_list' => $group_list
+        ]);
     }
 
     /**
      * 返回admin新建学生视图
      */
-    public function student_edit()
+    public function student_edit($uid)
     {
+        $user_info = model('account')->get_user_info_by_uid($uid);
+        $group_list = model('group')->get_group_list();
+        return view('admin.student_edit', [
+            'group_list' => $group_list,
+            'user_info' => $user_info,
+        ]);
+    }
 
-        return view('admin.student_edit');
+    public function student_edit_post($uid, Request $request)
+    {
+        $update_data = array();
+        $update_data['name'] = $request->get('name');
+        $update_data['uno'] = $request->get('uno');
+        if ($request->get('password')) {
+            $update_data['password'] = $request->get('password');
+        }
+        $update_data['class'] = $request->get('class');
+        $update_data['email'] = $request->get('email');
+        $update_data['mobile'] = $request->get('mobile');
+        $update_data['college'] = $request->get('college');
+        $update_data['group_id'] = $request->get('group_id');
+
+        if (!$update_data['uno']) {
+            return Redirect::back()
+                ->withErrors('学号必须填写')
+                ->withInput();
+        }
+
+        model('account')->update_users_fields($update_data, $uid);
+
+        return Redirect::route('admin::students');
     }
 
     /**
@@ -403,8 +465,10 @@ class mainController extends Controller
      */
     public function groups()
     {
-
-        return view('admin.groups');
+        $group_list = model('group')->get_group_list();
+        return view('admin.groups', [
+            'group_list' => $group_list
+        ]);
     }
 
     /**
@@ -414,6 +478,18 @@ class mainController extends Controller
     {
 
         return view('admin.groups_edit');
+    }
+
+    public function groups_new()
+    {
+
+        return view('admin.groups_new');
+    }
+
+    public function groups_marking()
+    {
+
+        return view('admin.groups_marking');
     }
 
 }
