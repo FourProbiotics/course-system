@@ -13,41 +13,47 @@
             <li class="active">新建</li>
         </ol>
         <form class="form-horizontal" action="#" method="post" enctype="multipart/form-data">
+            @if ($errors->hasBag('default'))
+                <span class="help-block">
+                    <strong>{{ $errors->first() }}</strong>
+                </span>
+            @endif
+            {!! csrf_field() !!}
             <div class="form-group">
                 <label for="inputTitle" class="col-sm-2 control-label">标题</label>
                 <div class="col-sm-4">
-                    <input type="text" name="to" class="form-control" id="inputTitle" placeholder="作业标题">
+                    <input type="text" name="title" class="form-control" id="inputTitle" placeholder="作业标题">
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputCourse" class="col-sm-2 control-label">课程</label>
                 <div class="col-sm-4">
                     <div style="width: 200%;max-height: 8em;overflow: auto;font-size: 0.9em;">
-                        <label><input type="checkbox" name="inputCourses[]">Databases, JavaScript, Ajax 和 PHP
-                            2016/2017（1）</label><br>
-                        <label><input type="checkbox" name="inputCourses[]">Databases, JavaScript, Ajax 和 PHP
-                            2015/2016（1）</label><br>
+                        <select name="course_id" class="form-control">
+                            @foreach($course_list as $key => $val)
+                                <option value="{{$val->course_id}}">{{$val->course_name}}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputTime" class="col-sm-2 control-label">截止日期</label>
                 <div class="col-sm-4">
-                    <input type="date" name="time" class="form-control" id="inputTime" placeholder="截止日期">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputScore" class="col-sm-2 control-label">满分</label>
-                <div class="col-sm-2">
-                    <input type="number" name="class" class="form-control" id="inputScore" placeholder="满分">
+                    <input type="date" name="deadline" class="form-control" id="inputTime" placeholder="截止日期">
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputContent" class="col-sm-2 control-label">作业内容</label>
                 <div class="col-sm-8">
-                    <textarea rows="5" name="content" class="form-control" id="inputContent"
+                    <script id="content" name="content" type="text/plain"></script>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputContent" class="col-sm-2 control-label">示例代码</label>
+                <div class="col-sm-8">
+                    <textarea rows="5" name="code" class="form-control" id="inputContent"
                               placeholder="作业内容"></textarea>
-                    <script>CKEDITOR.replace('inputContent');</script>
                 </div>
             </div>
             <div class="form-group">
@@ -65,4 +71,8 @@
             </div>
         </form>
     </div>
+    <!-- 实例化编辑器 -->
+    <script type="text/javascript">
+        var ue = UE.getEditor('content');
+    </script>
 @endsection

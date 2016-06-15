@@ -59,7 +59,7 @@ class Homework extends Model
     {
         $to_save_homework = array(
             'homework_title' => htmlspecialchars($homework_title),
-            'homework_content' => htmlspecialchars($homework_content),
+            'homework_content' => ($homework_content),
             'homework_code' => $homework_code,
             'course_id' => intval($course_id),
             'deadline' => date('Y-m-d H:i:s', $deadline),

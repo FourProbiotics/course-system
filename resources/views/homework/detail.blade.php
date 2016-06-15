@@ -43,7 +43,15 @@
                     <label class="col-sm-2 control-label">作业内容</label>
                     <div class="col-sm-10">
                         <div class="form-control-static">
-                            {{$homework->homework_content}}
+                            <?php echo $homework->homework_content; ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">测试代码</label>
+                    <div class="col-sm-10">
+                        <div class="form-control-static">
+                            <code>{{$homework->homework_code}}</code>
                         </div>
                     </div>
                 </div>

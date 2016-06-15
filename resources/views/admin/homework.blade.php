@@ -28,7 +28,8 @@
             @foreach($homework_list as $key => $val)
             <tr>
                 <th scope="row">{{$val->homework_id}}</th>
-                <td><a href="#">{{$val->homework_title}}</a></td> <!-- 点击显筛选课程作业 -->
+                <td><a href="{{ url('/course/'.$val->course_id.'/') }}">{{$val->course_info->course_name}}</a></td>
+                <!-- 点击显筛选课程作业 -->
                 <td>{{$val->homework_title}}</td>
                 <td>{{$val->deadline}}</td>
                 <td>{{$val->marking_status}}</td>

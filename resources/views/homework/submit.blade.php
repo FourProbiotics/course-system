@@ -11,7 +11,7 @@
             <li><a href="#">用户中心</a></li>
             <li><a href="{{ url('home/homework/') }}">作业管理</a></li>
             <li><a href="{{ url('/homework/'.$homework->homework_id) }}">{{$homework->homework_title}}</a></li>
-            <li class="active">提交</li>
+            <li class="active">{{$homework?'重新':''}}提交</li>
         </ol>
         <p class="bg-warning" style="padding: 1em;">注意：请按老师要求的格式提交作业。</p>
         <div style="margin-top: 1em; border-top: 1px solid #DDD; padding: 1em;">
