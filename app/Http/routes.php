@@ -113,9 +113,11 @@ Route::group(['as' => 'admin::'], function () {
     Route::post('admin/course/new', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@course_new_post']);
     Route::get('admin/course/{course_id}/edit', [
-        'middleware' => 'web', 'uses' => 'Admin\mainController@course_edit'])->where('id', '[0-9]+');
+        'middleware' => 'web', 'uses' => 'Admin\mainController@course_edit'])->where('course_id', '[0-9]+');
+    Route::post('admin/course/{course_id}/edit', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@course_edit_post'])->where('course_id', '[0-9]+');
     Route::get('admin/course/{course_id}/students', [
-        'middleware' => 'web', 'uses' => 'Admin\mainController@course_students'])->where('id', '[0-9]+');
+        'middleware' => 'web', 'uses' => 'Admin\mainController@course_students'])->where('course_id', '[0-9]+');
     Route::get('admin/course/{course_id}/groups', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@course_groups'])->where('course_id', '[0-9]+');
 

@@ -165,8 +165,7 @@ class mainController extends Controller
                 ->withInput();
         }
         
-        return Redirect::route('admin::courses')
-        ->withInput();
+        return Redirect::route('admin::courses');
     }
 
     /**
@@ -178,6 +177,28 @@ class mainController extends Controller
         return view('admin.course_edit', [
             'course_info' => $course_info,
         ]);
+    }
+
+    public function course_edit_post($course_id, Request $request)
+    {
+        $name = $request->get('name');
+        $teacher = $request->get('teacher');
+        $college = $request->get('college');
+        $term = $request->get('term');
+        $content = $request->get('content');
+        $teach_outline = $request->get('teach_outline');
+        $teach_plan = $request->get('teach_plan');
+
+        if(!$name || !$teacher ||!$college ||!$term)
+        {
+            return Redirect::back()
+                ->withErrors('名称、教师、学院、学期必须填写')
+                ->withInput();
+        }
+        
+        $course_info = model('course')->update_course($course_id, $name, $content, $term, $teach_outline, $teach_plan, $college, $teacher);
+
+        return Redirect::route('admin::courses');
     }
 
     /**

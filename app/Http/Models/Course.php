@@ -109,10 +109,10 @@ class Course extends Model
             $data['course_term'] = htmlspecialchars($course_term);
         }
         if ($teach_outline) {
-            $data['teach_outline'] = htmlspecialchars($teach_outline);
+            $data['teach_outline'] = $teach_outline?$teach_outline:'暂无';
         }
         if ($teach_plan) {
-            $data['teach_plan'] = htmlspecialchars($teach_plan);
+            $data['teach_plan'] = $teach_plan?$teach_plan:'暂无';
         }
         if ($course_college) {
             $data['course_college'] = htmlspecialchars($course_college);
@@ -121,10 +121,10 @@ class Course extends Model
             $data['teacher_name'] = htmlspecialchars($teacher_name);
         }
         if ($teach_ppt) {
-            $data['teach_ppt'] = ($teach_ppt);
+            $data['teach_ppt'] = serialize($teach_ppt);
         }
         if ($teach_book) {
-            $data['teach_book'] = ($teach_book);
+            $data['teach_book'] = serialize($teach_book);
         }
 
         DB::table('courses')->where('course_id', intval($course_id))->update($data);
