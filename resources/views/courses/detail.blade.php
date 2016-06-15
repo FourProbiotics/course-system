@@ -79,7 +79,7 @@
                                     <tbody>
                                     @foreach($resource as $key => $val)
                                         <tr>
-                                            <td><a href="{{ url('/resource/'.$val->id) }}">{{$val->file_name}}</a>
+                                            <td><a href="{{ url('/download/'.$val->id) }}">{{$val->file_name}}</a>
                                             </td>
                                             <td>{{$val->add_time}}</td>
                                         </tr>

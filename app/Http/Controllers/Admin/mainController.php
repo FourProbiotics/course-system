@@ -264,10 +264,12 @@ class mainController extends Controller
     /**
      * 返回admin作业详情视图
      */
-    public function homework_answer()
+    public function homework_answer($homework_id)
     {
-
-        return view('admin.homework_answer');
+        $answer_list = model('answer')->get_answer_list_by_homework_id($homework_id);
+        return view('admin.homework_answer', [
+            'answer_list' => $answer_list,
+        ]);
     }
 
     /**

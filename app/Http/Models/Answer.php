@@ -111,6 +111,8 @@ class Answer extends Model
         }
         if ($answer_list = $db->get()) {
             foreach ($answer_list as $key => $val) {
+                $val->resource = model('resource')->get_resource('answer', $val->answer_id);
+                $val->homework_info = model('homework')->get_homework_info_by_id($val->homework_id);
                 $uids[] = $val->uid;
             }
         }

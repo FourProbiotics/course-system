@@ -125,12 +125,12 @@ Route::group(['as' => 'admin::'], function () {
         'as' => 'homework', 'middleware' => 'web', 'uses' => 'Admin\mainController@homework']);
     Route::get('admin/homework/new', [
         'middleware' => 'web', 'uses' => 'Admin\mainController@homework_new']);
-    Route::get('admin/homework/{id}/edit', [
-        'middleware' => 'web', 'uses' => 'Admin\mainController@homework_edit'])->where('id', '[0-9]+');
-    Route::get('admin/homework/{id}/answer', [
-        'middleware' => 'web', 'uses' => 'Admin\mainController@homework_answer'])->where('id', '[0-9]+');
-    Route::get('admin/homework/{id}/marking', [
-        'middleware' => 'web', 'uses' => 'Admin\mainController@homework_marking'])->where('id', '[0-9]+');
+    Route::get('admin/homework/{homework_id}/edit', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@homework_edit'])->where('homework_id', '[0-9]+');
+    Route::get('admin/homework/{homework_id}/answer', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@homework_answer'])->where('homework_id', '[0-9]+');
+    Route::get('admin/homework/{homework_id}/answer/{answer_id}/marking', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@homework_marking'])->where('homework_id', '[0-9]+')->where('answer_id', '[0-9]+');
 
     Route::get('admin/resources', [
         'as' => 'resources', 'middleware' => 'web', 'uses' => 'Admin\mainController@resources']);

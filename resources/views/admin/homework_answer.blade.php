@@ -21,21 +21,29 @@
                 <th>标题</th>
                 <th>附件</th>
                 <th>分数</th>
+                <th>审阅</th>
                 <th>操作</th>
             </tr>
             </thead>
             <tbody>
+            @foreach($answer_list as $key => $val)
             <tr>
-                <th scope="row">1</th>
-                <td>201319630000</td>
-                <td>小明</td>
-                <td>实验二作业</td>
-                <td><a href="#">xxx.zip</a></td>
-                <td>80/100</td>
+                <th scope="row">{{$val->answer_id}}</th>
+                <td>{{$val->user_info->uno}}</td>
+                <td>{{$val->user_info->name}}</td>
+                <td>{{$val->homework_info->homework_title}}</td>
                 <td>
-                    <a href="{{ url('/admin/homework/1/marking') }}" class="btn btn-default btn-xs">详细&评分</a>
+                    @foreach($val->resource as $k => $v)
+                        <a href="{{ url('/download/'.$v->id) }}">{{$v->file_name}}</a>
+                    @endforeach
+                </td>
+                <td>{{$val->score}}</td>
+                <td>{{$val->read_flag?'已批改':'未批改'}}</td>
+                <td>
+                    <a href="{{ url('/admin/homework/'.$val->homework_info->homework_id.'/answer/'.$val->answer_id.'/marking') }}" class="btn btn-default btn-xs">详细&评分</a>
                 </td>
             </tr>
+            @endforeach
             </tbody>
         </table>
     </div>
