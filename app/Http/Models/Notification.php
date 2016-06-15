@@ -35,6 +35,23 @@ class Notification extends Model
         return false;
     }
 
+    public function send_all($sender_uid, $recipient_uids, $title, $content)
+    {
+        if (!is_array($recipient_uids)) {
+            return false;
+        }
+
+        foreach ($recipient_uids as $key => $val)
+        {
+            if(!$this->send($sender_uid, $val, $title, $content))
+            {
+                //return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
      *
      * 阅读段信息
@@ -44,7 +61,7 @@ class Notification extends Model
      */
     public function read_notification($notification_id, $uid = null)
     {
-        $notification_ids = explode(';', $notification_id);
+        $notification_ids = explode(',', $notification_id);
 
         array_walk_recursive($notification_ids, 'intval_string');
 

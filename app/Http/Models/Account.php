@@ -22,6 +22,29 @@ class Account extends Model
         return DB::table('users')->where('uno', $uno)->orWhere('remember_token', $uno)->first();
     }
 
+    /**
+     * 检查unos是否都存在,都存在返回false
+     *
+     * @param array
+     * @return boolean
+     */
+    public function exist_error_unos($unos)
+    {
+        if(!is_array($unos))
+        {
+            return true;
+        }
+        $error = array();
+        foreach ($unos as $key => $val)
+        {
+            if(!$this->check_uno($val))
+            {
+                $error[] = $val;
+            }
+        }
+        return $error;
+    }
+
     /*
      * 邮箱验证
      * @param string
@@ -318,6 +341,18 @@ class Account extends Model
         }
 
         return true;
+    }
+
+    public function get_all_uids()
+    {
+        $ids = DB::table('users')->select('id')->get();
+        $uids = array();
+        foreach ($ids as $key=> $val)
+        {
+            $uids[] = $val->id;
+        }
+
+        return $uids;
     }
 
 

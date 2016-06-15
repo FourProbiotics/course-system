@@ -16,6 +16,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use DB;
 
 class mainController extends Controller
 {
@@ -29,7 +30,6 @@ class mainController extends Controller
         //var_dump($course_list);
         return view('courses.index', ['courses' => $courses,]);
     }
-
     /**
      * 课程页面
      */
@@ -46,6 +46,29 @@ class mainController extends Controller
             'resource' => $resource,
             'comments' => $comments,
         ]);
+    }
+
+    public function course_post($id, Request $request)
+    {
+        if(Auth::guest())
+        {
+            return Redirect::route('login')
+                ->withErrors('请先登录')
+                ->withInput();
+        }
+
+        $content = $request->get('content');
+        
+        if(!$content)
+        {
+            return Redirect::route('course_detail', ['id' => $id])
+                ->withErrors('评论不能为空')
+                ->withInput();
+        }
+
+        model('comment')->save_comment($id, $content, Auth::user()->id);
+
+        return Redirect::route('course_detail', ['id' => $id]);
     }
 
 }

@@ -52,7 +52,10 @@ Route::get('courses/', [
     'middleware' => 'web', 'uses' => 'Courses\mainController@index']);
 
 Route::get('course/{id}', [
-    'middleware' => 'web', 'uses' => 'Courses\mainController@course'])->where('id', '[0-9]+');
+    'middleware' => 'web', 'as' => 'course_detail', 'uses' => 'Courses\mainController@course'])->where('id', '[0-9]+');
+
+Route::post('course/{id}', [
+    'middleware' => 'web', 'uses' => 'Courses\mainController@course_post'])->where('id', '[0-9]+');
 
 ####################################################
 #公告的相关操作
@@ -92,14 +95,16 @@ Route::group(['as' => 'admin::'], function () {
     Route::get('admin/', [
         'as' => 'setting', 'middleware' => 'web', 'uses' => 'Admin\mainController@index']);
     Route::get('admin/setting', [
-        'as' => 'setting', 'as' => 'setting', 'middleware' => 'web', 'uses' => 'Admin\mainController@setting']);
+        'as' => 'setting', 'middleware' => 'web', 'uses' => 'Admin\mainController@setting']);
     Route::post('admin/setting', [
         'as' => 'setting', 'middleware' => 'web', 'uses' => 'Admin\mainController@setting_post']);
 
     Route::get('admin/messages', [
         'as' => 'messages', 'middleware' => 'web', 'uses' => 'Admin\mainController@messages']);
     Route::get('admin/message/new', [
-        'middleware' => 'web', 'uses' => 'Admin\mainController@message_new']);
+        'middleware' => 'web', 'as' => 'message_new', 'uses' => 'Admin\mainController@message_new']);
+    Route::post('admin/message/new', [
+        'middleware' => 'web', 'uses' => 'Admin\mainController@message_new_post']);
 
     Route::get('admin/courses', [
         'as' => 'courses', 'middleware' => 'web', 'uses' => 'Admin\mainController@courses']);

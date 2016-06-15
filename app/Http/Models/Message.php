@@ -12,24 +12,37 @@ class Message extends Model
         if (!$sender_uid OR !$recipient_uid OR !$content OR !$title) {
             return false;
         }
+        if(!is_array($recipient_uid))
+        {
+            $recipient_uids = explode(',', $recipient_uid);
+        }
+        else
+        {
+            $recipient_uids = $recipient_uid;
+        }
 
-        $recipient_uids = explode(';', $recipient_uid);
 
-        if ($message_id = DB::table('messages')->insert(array(
-            'title' => $title,
+        if ($message_id = DB::table('messages')->insertGetId(array(
+            'title' => htmlspecialchars($title),
             'content' => htmlspecialchars($content),
             'sender_uid' => intval($sender_uid),
             'recipient_uid' => serialize($recipient_uids),
             'add_time' => date('Y-m-d H:i:s', time()),
-            'update_time' => date('Y-m-d H:i:s', time()),
         ))
         ) {
-            //逐个发送通知
-            foreach ($recipient_uids as $key => $uid) {
-                model('Notification')->send($sender_uid, $uid, $title, $content);
-            }
+            //发送通知
+            //model('Notification')->send_all($sender_uid, $recipient_uids, $title, $content);
         }
 
         return $message_id;
+    }
+
+    function get_message_list()
+    {
+        $db = DB::table('messages');
+
+        $result = $db->get();
+
+        return $result;
     }
 }

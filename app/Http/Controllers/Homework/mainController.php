@@ -46,7 +46,7 @@ class mainController extends Controller
             $answer->resource = model('resource')->get_resource('answer', $answer->answer_id);
         }
 
-        var_dump($answer);
+        //var_dump($answer);
 
         return view('homework.submit', [
             'homework' => $homework,

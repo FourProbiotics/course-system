@@ -17,17 +17,25 @@
             <tr>
                 <th>#</th>
                 <th>to</th>
+                <th style="min-width: 20em;">标题</th>
                 <th style="min-width: 20em;">内容</th>
                 <th>时间</th>
             </tr>
             </thead>
             <tbody>
+            @foreach($messages as $key => $val)
             <tr>
-                <th scope="row">1</th>
-                <td>201319630000</td>
-                <td>你好啊</td>
-                <td>2016-01-01 11:11:11</td>
+                <th scope="row">{{$val->id}}</th>
+                <td>
+                    @foreach($val->recipient_user as $k => $v)
+                        {{$v->name}}
+                    @endforeach
+                </td>
+                <td>{{$val->title}}</td>
+                <td>{{$val->content}}</td>
+                <td>{{$val->add_time}}</td>
             </tr>
+            @endforeach
             </tbody>
         </table>
     </div>

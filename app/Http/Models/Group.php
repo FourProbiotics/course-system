@@ -45,15 +45,38 @@ class Group extends Model
     }
 
     /**
+     * 通过group_ids获取成员uid
+     *
+     * @param array
+     * @return boolean
+     */
+    public function get_member_uids_by_group_ids($group_ids)
+    {
+        if (!is_array($group_ids)) {
+            return false;
+        }
+        $user_list = DB::table('users')->select('id')->whereIn('group_id', $group_ids)->get();
+
+        $uids= array();
+        foreach ($user_list as $key => $val)
+        {
+            $uids[] = $val->id;
+        }
+
+        return $uids;
+    }
+
+    /**
      * 获取分组列表
      *
      * @return boolean
      */
     public function get_group_list()
     {
-        $groups = DB::table('groups')->first();
+        $groups = DB::table('groups')->get();
         foreach ($groups as $key => $val) {
-            $groups->member = DB::table('users')->where('group_id', intval($val->group_id))->get();
+            $val->member = DB::table('users')->where('group_id', intval($val->group_id))->get();
+            $val->course_info = model('course')->get_course_info_by_id($val->course_id);
         }
 
         return $groups;

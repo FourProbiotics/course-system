@@ -58,8 +58,15 @@ class mainController extends Controller
      */
     public function messages()
     {
-
-        return view('admin.messages');
+        $messages = model('message')->get_message_list();
+        foreach ($messages as $key => $val)
+        {
+            $val->recipient_user = model('account')->get_user_info_by_uids(unserialize($val->recipient_uid));
+        }
+        //var_dump($messages);
+        return view('admin.messages', [
+            'messages'=> $messages,
+        ]);
     }
 
     /**
@@ -67,8 +74,50 @@ class mainController extends Controller
      */
     public function message_new()
     {
+        $group_list = model('group')->get_group_list();
+        return view('admin.message_new', [
+            'group_list' => $group_list
+        ]);
+    }
 
-        return view('admin.message_new');
+    public function message_new_post(Request $request)
+    {
+        $title = $request->get('title');
+        $content = $request->get('content');
+        $user_uids = array();
+        $group_uids = array();
+
+        if($users = $request->get('user'))
+        {
+            $users = explode(',', $users);
+            if($error = model('account')->exist_error_unos($users))
+            {
+                return Redirect::back()
+                    ->withErrors('下列用户不存在: '.implode(" ",$error))
+                    ->withInput();
+            }
+            $user_uids = model('account')->get_uids_by_unos($users);
+        }
+
+        if($group = $request->get('group'))
+        {
+            if($group[0] == 'all')
+            {
+                $uids = model('account')->get_all_uids();
+                model('message')->send_message(Auth::user()->id, $uids, $title, $content);
+                return Redirect::route('admin::messages')
+                    ->withErrors('提交成功！');
+            }
+            $group_uids = model('group')->get_member_uids_by_group_ids($group);
+        }
+
+        $uids = array_unique(array_merge($user_uids, $group_uids));
+
+        //model('notification')->send_all(Auth::user()->id, $uids, $title, $content);
+        model('message')->send_message(Auth::user()->id, $uids, $title, $content);
+
+        return Redirect::route('admin::messages')
+            ->withErrors('提交成功！');
     }
 
     /**

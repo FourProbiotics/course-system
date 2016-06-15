@@ -71,14 +71,14 @@ class Comment extends Model
             'update_time' => date('Y-m-d H:i:s', time()),
             'email' => htmlspecialchars($email),
             'mobile' => htmlspecialchars($mobile),
-        ))
-        ) {
+        )))
+        {
             return false;
         }
 
-        DB::table('course')->where('course_id', intval($course_id))->update(array(
+        /*DB::table('course')->where('course_id', intval($course_id))->update(array(
             'update_time' => date('Y-m-d H:i:s', time()),
-        ));
+        ));*/
 
         return $comment_id;
     }

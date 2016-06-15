@@ -96,14 +96,24 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">评论/留言</h3>
                     </div>
+                    @if ($errors->hasBag('default'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first() }}</strong>
+                        </span>
+                    @endif
                     <div class="panel-body">
-                        <form class="form-inline">
+                        <form class="form-inline" method="post">
+                            {!! csrf_field() !!}
                             <div class="form-group">
                                 <label class="sr-only" for="inputContent">内容</label>
-                                <input style="width: 25em;" type="text" class="form-control" id="inputContent"
+                                <input style="width: 25em;" type="text" class="form-control" name="content"
                                        placeholder="评论/留言内容">
                             </div>
-                            <button type="submit" disabled="disabled" class="btn btn-primary">发布</button>
+                            @if (Auth::guest())
+                                <button type="submit" disabled="disabled" class="btn btn-danger btn-xs">请先登录</button>
+                            @else
+                                <button type="submit" class="btn btn-primary">发布</button>
+                            @endif
                             <!-- 登录后允许评论 -->
                         </form>
                     </div>
