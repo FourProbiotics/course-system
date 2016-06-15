@@ -251,8 +251,8 @@ class mainController extends Controller
         foreach ($homework_list as $key => $val)
         {
             $answer = model('answer')->get_answer_list_by_homework_id($val->homework_id);
-            $answer_has_read = model('answer')->get_answer_list_by_homework_id($val->homework_id, 0);
-            $val->marking_status = count($answer_has_read).'/'.count($answer);
+            $students = model('account')->get_user_list_by_course_id($val->course_id);
+            $val->marking_status = count($answer) . '/' . count($students);
         }
 
         return view('admin.homework', [
@@ -270,6 +270,51 @@ class mainController extends Controller
         return view('admin.homework_new', [
             'course_list' => $course_list,
         ]);
+    }
+
+    public function homework_new_post(Request $request)
+    {
+        $title = $request->get('title');
+        $course_id = $request->get('course_id');
+        $deadline = $request->get('deadline');
+        $deadline = time($deadline . '23:59:59');
+        $content = $request->get('content');
+        $code = $request->get('code');
+
+        if (!$title || !$course_id || !$deadline) {
+            return Redirect::back()
+                ->withErrors('标题、课程、截止日期必须填写')
+                ->withInput();
+        }
+        $upload = new core_upload();
+
+        $upload->initialize(array(
+            'allowed_types' => get_config('allowed_upload_types'),
+            'upload_path' => base_path('public/uploads') . '/homework/' . gmdate('Ymd'),
+            'is_image' => TRUE,
+            'max_size' => 1024 * 10,
+        ));
+        $upload->do_upload('file');
+
+        if ($upload->get_error()) {
+            return Redirect::back()
+                ->withErrors($upload->get_error())
+                ->withInput();
+        }
+
+        if (!$upload_data = $upload->data()) {
+            return Redirect::back()
+                ->withErrors('上传失败，请与管理员联系')
+                ->withInput();
+        }
+
+        $homework_id = model('homework')->save_homework($title, $content, $course_id, $deadline, $code);
+
+        if ($upload_data) {
+            model('resource')->add_resource('homework', $title, $upload_data['orig_name'], basename($upload_data['full_path']), $homework_id, $upload_data['is_image']);
+        }
+
+        return Redirect::route('admin::courses');
     }
 
     /**
