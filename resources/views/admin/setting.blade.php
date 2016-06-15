@@ -12,10 +12,11 @@
             <li class="active">网站设置</li>
         </ol>
         <form class="form-horizontal" action="#" method="post">
+            {!! csrf_field() !!}
             <div class="form-group">
                 <label for="inputName" class="col-sm-2 control-label">网站标题</label>
                 <div class="col-sm-4">
-                    <input type="name" value="课程网站系统" class="form-control" id="inputName" placeholder="网站标题">
+                    <input type="name" value="{{$site_name}}" class="form-control" name="site_name" placeholder="网站标题">
                 </div>
             </div>
             <div class="form-group">

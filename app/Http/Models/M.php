@@ -11,7 +11,7 @@ class M extends Model
      * @access      final   protected
      * @param       string $model 模型名称
      */
-    final protected function model($model)
+    final public static function model($model)
     {
         $model_name = 'App\Http\Models\\' . ucfirst($model);
         return new $model_name;

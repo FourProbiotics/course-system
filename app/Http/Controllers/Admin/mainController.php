@@ -28,13 +28,29 @@ class mainController extends Controller
         $this->middleware('admin');
     }
 
+    public function index()
+    {
+        return Redirect::route('admin::setting');
+    }
+
     /**
      * 返回admin设置视图
      */
     public function setting()
     {
+        $site_name = setting('site_name');
+        return view('admin.setting', ['site_name' => $site_name]);
+    }
 
-        return view('admin.setting');
+    public function setting_post(Request $request)
+    {
+        $site_name = $request->get('site_name');
+        model('setting')->set_vars([
+            'site_name' => $site_name,
+        ]);
+        return Redirect::route('admin::setting')
+            ->withErrors('提交成功！')
+            ->withInput();
     }
 
     /**

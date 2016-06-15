@@ -90,9 +90,11 @@ Route::post('homework/{id}/submit', [
 ####################################################
 Route::group(['as' => 'admin::'], function () {
     Route::get('admin/', [
-        'as' => 'setting', 'middleware' => 'web', 'uses' => 'Admin\mainController@setting']);
+        'as' => 'setting', 'middleware' => 'web', 'uses' => 'Admin\mainController@index']);
     Route::get('admin/setting', [
-        'as' => 'setting', 'middleware' => 'web', 'uses' => 'Admin\mainController@setting']);
+        'as' => 'setting', 'as' => 'setting', 'middleware' => 'web', 'uses' => 'Admin\mainController@setting']);
+    Route::post('admin/setting', [
+        'as' => 'setting', 'middleware' => 'web', 'uses' => 'Admin\mainController@setting_post']);
 
     Route::get('admin/messages', [
         'as' => 'messages', 'middleware' => 'web', 'uses' => 'Admin\mainController@messages']);
