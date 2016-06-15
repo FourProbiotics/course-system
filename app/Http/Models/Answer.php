@@ -113,15 +113,7 @@ class Answer extends Model
             foreach ($answer_list as $key => $val) {
                 $val->resource = model('resource')->get_resource('answer', $val->answer_id);
                 $val->homework_info = model('homework')->get_homework_info_by_id($val->homework_id);
-                $uids[] = $val->uid;
-            }
-        }
-
-        if ($uids) {
-            if ($users_info = model('account')->get_user_info_by_uids($uids)) {
-                foreach ($answer_list as $key => $val) {
-                    $answer_list[$key]->user_info = $users_info[$val->uid];
-                }
+                $val->user_info = model('account')->get_user_info_by_uid($val->uid);
             }
         }
 
