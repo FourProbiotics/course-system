@@ -32,7 +32,8 @@ class Resource extends Model
         }
         DB::table('resource')->where('id', intval($id))->delete();
 
-        $resource_dir = base_path('public/uploads') . '/' . $resource->file_location;
+        $resource_dir = base_path('public/uploads') . '/' . $resource->item_type . '/' . gmdate('Ymd', time($resource->add_time))
+            . '/' . $resource->file_location;
 
         @unlink($resource_dir);
 
@@ -43,6 +44,15 @@ class Resource extends Model
     {
 
         if ($resource = DB::table('resource')->where('id', intval($id))->first()) {
+            return $resource;
+        }
+
+        return false;
+    }
+
+    public function get_resource_list()
+    {
+        if ($resource = DB::table('resource')->get()) {
             return $resource;
         }
 

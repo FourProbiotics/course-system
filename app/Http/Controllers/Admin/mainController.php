@@ -82,6 +82,12 @@ class mainController extends Controller
         ]);
     }
 
+    public function message_delete($id)
+    {
+        model('message')->delete_message_by_id();
+        return view('admin.messages');
+    }
+
     public function message_new_post(Request $request)
     {
         $title = $request->get('title');
@@ -140,6 +146,12 @@ class mainController extends Controller
     {
 
         return view('admin.course_new');
+    }
+
+    public function course_delete($course_id)
+    {
+        model('course')->remove_course($course_id);
+        return Redirect::back();
     }
 
     public function course_new_post(Request $request)
@@ -253,8 +265,11 @@ class mainController extends Controller
      */
     public function homework_new()
     {
-
-        return view('admin.homework_new');
+        $course_list = model('course')->get_courses_list(0, 200);
+        
+        return view('admin.homework_new', [
+            'course_list' => $course_list,
+        ]);
     }
 
     /**
@@ -291,8 +306,10 @@ class mainController extends Controller
      */
     public function resources()
     {
-
-        return view('admin.resources');
+        $resources = model('resource')->get_resource_list();
+        return view('admin.resources', [
+            'resources' => $resources,
+        ]);
     }
 
     /**
@@ -311,6 +328,12 @@ class mainController extends Controller
     {
 
         return view('admin.resource_edit');
+    }
+
+    public function resource_delete($id)
+    {
+        model('resource')->remove_resource($id);
+        return Redirect::back();
     }
 
     /**
@@ -388,8 +411,18 @@ class mainController extends Controller
      */
     public function announce_edit($id)
     {
+        $announce = model('announce')->get_announce_info_by_id($id);
 
-        return view('admin.announce_edit');
+        return view('admin.announce_edit', [
+            'announce' => $announce,
+        ]);
+    }
+
+    public function announce_delete($id)
+    {
+        model('announce')->remove_announce($id);
+
+        return Redirect::back();
     }
 
     /**
@@ -521,22 +554,65 @@ class mainController extends Controller
     /**
      * 返回分组编辑视图
      */
-    public function groups_edit()
+    public function groups_edit($group_id)
     {
-
-        return view('admin.groups_edit');
+        $course_list = model('course')->get_courses_list(0, 200);
+        $group = model('group')->get_group_info_by_id($group_id);
+        return view('admin.groups_edit', [
+            'group' => $group,
+            'course_list' => $course_list,
+        ]);
     }
 
     public function groups_new()
     {
-
-        return view('admin.groups_new');
+        $course_list = model('course')->get_courses_list(0, 200);
+        return view('admin.groups_new', [
+            'course_list' => $course_list,
+        ]);
     }
 
-    public function groups_marking()
+    public function groups_new_post(Request $request)
     {
+        $course_id = $request->get('course_id');
+        $member = $request->get('member');
 
-        return view('admin.groups_marking');
+        $member_unos = explode(',', $member);
+        if ($error = model('account')->exist_error_unos($member_unos)) {
+            return Redirect::back()
+                ->withErrors('下列用户不存在: ' . implode(" ", $error))
+                ->withInput();
+        }
+        $user_uids = model('account')->get_uids_by_unos($member_unos);
+        model('group')->init_group($member_unos, $course_id);
+
+        return Redirect::route('admin::groups');
+    }
+
+    public function groups_marking($group_id)
+    {
+        $group = model('group')->get_group_info_by_id($group_id);
+        return view('admin.groups_marking', [
+            'group' => $group,
+        ]);
+    }
+
+    public function groups_marking_post($group_id, Request $request)
+    {
+        $marking = $request->get('marking');
+
+        model('group')->marking_group($group_id, $marking);
+
+        return Redirect::route('admin::groups');
+    }
+
+    public function groups_delete($group_id)
+    {
+        if ($group_id == 1) {
+            return Redirect::back();
+        }
+        model('group')->delete_group($group_id);
+        return Redirect::back();
     }
 
 }

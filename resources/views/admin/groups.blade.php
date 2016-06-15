@@ -18,6 +18,7 @@
                 <th>组号</th>
                 <th>成员</th>
                 <th>课程</th>
+                <th>评分</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -31,10 +32,12 @@
                     @endforeach
                 </td>
                 <td>{{$val->course_info->course_name}}</td>
+                <td>{{$val->score}}</td>
                 <td>
-                    <a href="{{ url('/admin/groups/1/edit') }}" class="btn btn-default btn-xs">编辑</a>
-                    <a href="{{ url('/admin/groups/1/marking/') }}" class="btn btn-default btn-xs">评分</a>
-                    <a href="{{ url('/admin/groups/1/delete') }}" class="btn btn-default btn-xs">删除</a>
+                    <a href="{{ url('/admin/groups/'.$val->group_id.'/edit') }}" class="btn btn-default btn-xs">编辑</a>
+                    <a href="{{ url('/admin/groups/'.$val->group_id.'/marking/') }}"
+                       class="btn btn-default btn-xs">评分</a>
+                    <a href="{{ url('/admin/groups/'.$val->group_id.'/delete') }}" class="btn btn-default btn-xs">删除</a>
                 </td>
             </tr>
             @endforeach

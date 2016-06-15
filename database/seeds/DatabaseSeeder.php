@@ -79,7 +79,7 @@ class DatabaseSeeder extends Seeder
             'resource_content' => '测试资源内容1',
             'add_time' => date('Y-m-d H:i:s', time()),
             'file_location' => 'resource/test.rar',
-            'item_type' => 'announces',
+            'item_type' => 'announce',
             'item_id' => 1,
         ]);
 

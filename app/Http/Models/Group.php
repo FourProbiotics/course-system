@@ -19,9 +19,9 @@ class Group extends Model
             return false;
         }
 
-        $data = new \stdClass();
-        $data->group = DB::table('groups')->where('group_id', intval($group_id))->first();
+        $data = DB::table('groups')->where('group_id', intval($group_id))->first();
         $data->member = DB::table('users')->where('group_id', intval($group_id))->get();
+        $data->course_info = model('course')->get_course_info_by_id($data->course_id);
 
         return $data;
     }
@@ -100,15 +100,16 @@ class Group extends Model
         return $groups;
     }
 
-    public function init_group($member_uids)
+    public function init_group($member_uids, $course_id)
     {
         $group_id = DB::table('groups')->insertGetId(array(
+            'course_id' => $course_id,
             'score' => 0,
             'add_time' => date('Y-m-d H:i:s', time()),
             'update_time' => date('Y-m-d H:i:s', time()),
         ));
 
-        DB::table('users')->whereIn('uid', $member_uids)->update([
+        DB::table('users')->whereIn('id', $member_uids)->update([
             'group_id' => $group_id
         ]);
 
@@ -130,13 +131,24 @@ class Group extends Model
         return $group_id;
     }
 
-    public function delete_group($group_id, $member_uids)
+    public function marking_group($group_id, $marking)
+    {
+        DB::table('groups')->where('group_id', intval($group_id))->update([
+            'score' => intval($marking),
+        ]);
+
+        return true;
+    }
+
+    public function delete_group($group_id)
     {
         $old_member = DB::table('users')->where('group_id', intval($group_id))->get();
 
         DB::table('users')->whereIn('uid', $old_member)->update([
             'group_id' => 0
         ]);
+
+        DB::table('groups')->where('group_id', intval($group_id))->delete();
 
         return $group_id;
     }

@@ -70,7 +70,9 @@
                 <label for="inputFile" class="col-sm-2 control-label">附件</label>
                 <div class="col-sm-8">
                     @if(isset($course_info->resource))
-                    <p class="form-control-static"><a href="#">{{$course_info->resource->file_name}}</a></p>
+                        <p class="form-control-static"><a
+                                    href="{{ url('/download/'.$course_info->resource->id) }}">{{$course_info->resource->file_name}}</a>
+                        </p>
                     @endif
                     <input type="file" name="file" id="inputFile">
                     <p class="help-block">支持格式： {{get_config('allowed_upload_types')}}</p>

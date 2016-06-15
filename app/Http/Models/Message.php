@@ -45,4 +45,11 @@ class Message extends Model
 
         return $result;
     }
+
+    function delete_message_by_id($id)
+    {
+        DB::table('messages')->where('id', $id)->delete();
+
+        return true;
+    }
 }

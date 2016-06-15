@@ -52,7 +52,7 @@
                 <li><a href="{{ url('/admin/messages') }}">短消息</a></li>
                 <li><a href="{{ url('/admin/courses') }}">课程管理</a></li>
                 <li><a href="{{ url('/admin/homework') }}">作业管理</a></li>
-                <li><a href="{{ url('/admin/resources') }}">课程资源管理</a></li>
+                <li><a href="{{ url('/admin/resources') }}">资源管理</a></li>
                 <li><a href="{{ url('/admin/announces') }}">公告管理</a></li>
                 <li><a href="{{ url('/admin/students') }}">学生管理</a></li>
                 <li><a href="{{ url('/admin/groups') }}">分组管理</a></li>

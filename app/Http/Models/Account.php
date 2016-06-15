@@ -236,7 +236,7 @@ class Account extends Model
 
         if ($user_info = DB::table('users')->whereIn('uno', $unos)->get()) {
             foreach ($user_info as $key => $val) {
-                $uids[] = $val->uid;
+                $uids[] = $val->id;
             }
         }
 
