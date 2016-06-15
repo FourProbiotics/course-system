@@ -30,7 +30,7 @@
                         <tr>
                             <th scope="row">{{$val->course_id}}</th>
                             <td>
-                                <a href="{{ url('/') }}/course/{{$val->course_id}}/">{{$val->course_name}}</a>
+                                <a href="{{ url('/course/'.$val->course_id) }}">{{$val->course_name}}</a>
                             </td>
                             <td>{{$val->teacher_name}}</td>
                             <td>{{$val->course_college}}</td>
@@ -56,7 +56,7 @@
                             <tbody>
                             <?php foreach ($announces as $key => $val) {?>
                             <tr>
-                                <td><a href="{{ url('/') }}/announce/{{$val->id}}/">{{$val->title}}</a></td>
+                                <td><a href="{{ url('/announce/'.$val->id) }}">{{$val->title}}</a></td>
                                 <td>{{$val->update_time}}</td>
                             </tr>
                             <?php } ?>
